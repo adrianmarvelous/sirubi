@@ -1,4 +1,5 @@
 <?php
+    session_start();
     // Database connection variables
     $db_host = 'localhost';
     $db_name = 'rb';
