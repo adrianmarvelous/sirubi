@@ -42,18 +42,19 @@
         $email = htmlentities($_POST['email']);
         $password = htmlentities($_POST['password']);
 
-        $q_user = $db->prepare("SELECT * FROM rb_users WHERE email = :email");
+        $q_user = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role = rb_role.id_role  WHERE email = :email");
         $q_user->bindParam(':email', $email);
         $q_user->execute();
 
         if($q_user->rowCount() > 0){
             $user_data = $q_user->fetch(PDO::FETCH_ASSOC);
-            if(password_verify($password, $user['password'])){
+            if(password_verify($password, $user_data['password'])){
                 
                 $_SESSION['name'] = $user_data['name'];
                 $_SESSION['email'] = $user_data['email'];
-                $_SESSION['role_id'] = $user_data['role_id'];
+                $_SESSION['role_id'] = $user_data['id_role'];
                 $_SESSION['role'] = $user_data['role'];
+                $_SESSION['auth'] = 'auth';
                 // $_SESSION['picture'] = $user_data['picture'];
 
                 header('Location: ../index.php'); // Redirect to the main page after login
