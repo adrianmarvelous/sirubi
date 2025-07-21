@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 ini_set('display_errors', 1);
 error_reporting(~0);
 
@@ -19,10 +19,11 @@ if (isset($_GET['code'])) {
 
         $_SESSION['auth'] = 'auth';
         $created_at = date('Y-m-d H:i:s');
-        $role = 1;
+        $role_id = 1;
+        $role = 'User'; // Default role for new users
 
         // Check if user exists
-        $stmt = $db->prepare("SELECT * FROM rb_users WHERE email = :email");
+        $stmt = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role = rb_role.id_role WHERE email = :email");
         $stmt->bindParam(':email', $user->email);
         $stmt->execute();
 
@@ -34,13 +35,14 @@ if (isset($_GET['code'])) {
             $stmt_insert->bindParam(':email', $user->email);
             $stmt_insert->bindParam(':google_id', $user->id);
             $stmt_insert->bindParam(':picture', $user->picture);
-            $stmt_insert->bindParam(':role', $role);
+            $stmt_insert->bindParam(':role', $role_id);
             $stmt_insert->bindParam(':created_at', $created_at);
             $stmt_insert->execute();
 
             // Set session manually
             $_SESSION['name'] = $user->user_name;
             $_SESSION['email'] = $user->user_email;
+            $_SESSION['role_id'] = $role_id;
             $_SESSION['role'] = $role;
             $_SESSION['picture'] = $user->picture;
         } else {
@@ -48,6 +50,7 @@ if (isset($_GET['code'])) {
             $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['name'] = $user_data['name'];
             $_SESSION['email'] = $user_data['email'];
+            $_SESSION['role_id'] = $user_data['role_id'];
             $_SESSION['role'] = $user_data['role'];
             $_SESSION['picture'] = $user_data['picture'];
         }
