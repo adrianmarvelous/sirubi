@@ -225,7 +225,7 @@
                 $q_user->bindParam(':id_user', $_SESSION['id_user']);
                 $q_user->execute();
                 $check_user = $q_user->fetch(PDO::FETCH_ASSOC);
-                if(!isset($check_user['telp']) || !isset($check_user['instansi'])){
+                if(!isset($check_user['telp']) || !isset($check_user['instansi']) || !isset($check_user['alamat'])){
                   $showModal = true;
                 }
               ?>
@@ -243,6 +243,8 @@
                 } elseif(htmlentities($_GET['pages']) == 'calendar_booking') {
                     include "controller/calendar.php";
                 } elseif(htmlentities($_GET['pages']) == 'permohonan') {
+                    include "controller/calendar.php";
+                } elseif(htmlentities($_GET['pages']) == 'create_part_2') {
                     include "controller/calendar.php";
                 }
               ?>
@@ -273,6 +275,12 @@
                           <div class="col mb-3">
                             <label for="nameBasic" class="form-label">No Telp</label>
                             <input type="text" id="nameBasic"  name="telp" class="form-control" placeholder="Masukan No Telp" value="<?=$check_user['telp']?>" required>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col mb-3">
+                            <label for="nameBasic" class="form-label">Alamat</label>
+                            <input type="text" id="nameBasic"  name="alamat" class="form-control" placeholder="Masukan Alamat" value="<?=$check_user['alamat']?>" required>
                           </div>
                         </div>
                       </div>

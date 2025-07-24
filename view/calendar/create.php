@@ -48,6 +48,14 @@
             </div>
             <div class="row mt-3">
                 <div class="col-lg-3">
+                    <label for="">Alamat</label>
+                </div>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" name="telp" value="<?=$check_user['alamat']?>" required>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-lg-3">
                     <label for="">Upload Surat Permohonan</label>
                 </div>
                 <div class="col-lg-9">
