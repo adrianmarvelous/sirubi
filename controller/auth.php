@@ -50,6 +50,7 @@
             $user_data = $q_user->fetch(PDO::FETCH_ASSOC);
             if(password_verify($password, $user_data['password'])){
                 
+                $_SESSION['id_user'] = $user_data['id_user'];
                 $_SESSION['name'] = $user_data['name'];
                 $_SESSION['email'] = $user_data['email'];
                 $_SESSION['role_id'] = $user_data['id_role'];

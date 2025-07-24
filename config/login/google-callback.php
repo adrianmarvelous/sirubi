@@ -23,7 +23,7 @@ if (isset($_GET['code'])) {
         $role = 'User'; // Default role for new users
 
         // Check if user exists
-        $stmt = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role = rb_role.id_role WHERE email = :email");
+        $stmt = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role_id = rb_role.id_role WHERE email = :email");
         $stmt->bindParam(':email', $user->email);
         $stmt->execute();
 
@@ -40,6 +40,7 @@ if (isset($_GET['code'])) {
             $stmt_insert->execute();
 
             // Set session manually
+            $_SESSION['id_user'] = $user->id_user;
             $_SESSION['name'] = $user->user_name;
             $_SESSION['email'] = $user->user_email;
             $_SESSION['role_id'] = $role_id;
@@ -48,6 +49,7 @@ if (isset($_GET['code'])) {
         } else {
             // User exists, fetch data
             $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['id_user'] = $user_data['id_user'];
             $_SESSION['name'] = $user_data['name'];
             $_SESSION['email'] = $user_data['email'];
             $_SESSION['role_id'] = $user_data['role_id'];
