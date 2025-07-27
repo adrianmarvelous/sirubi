@@ -42,6 +42,9 @@
 
     <link rel="stylesheet" href="assets/sneat/assets/vendor/fonts/iconify-icons.css" />
 
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <!-- Core CSS -->
     <!-- build:css assets/vendor/css/theme.css  -->
 
@@ -237,15 +240,31 @@
                 <?php unset($_SESSION['alert']); ?>
               <?php endif; ?>
               <?php
-              
-                if (@htmlentities($_GET['pages']) == "") {
-                  include "home.php";
-                } elseif(htmlentities($_GET['pages']) == 'calendar_booking') {
-                    include "controller/calendar.php";
-                } elseif(htmlentities($_GET['pages']) == 'permohonan') {
-                    include "controller/calendar.php";
-                } elseif(htmlentities($_GET['pages']) == 'create_part_2') {
-                    include "controller/calendar.php";
+                $role_id = $_SESSION['role_id'];
+                $page = isset($_GET['pages']) ? htmlentities($_GET['pages']) : '';
+
+                // Pages allowed for each role
+                if ($role_id == 1) {
+                    if ($page == "") {
+                        include "home.php";
+                    } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking'])) {
+                        include "controller/booking.php";
+                    } else {
+                        echo "<script>alert('Akses ditolak');history.back();</script>";
+                    }
+                } elseif ($role_id == 2) {
+                    if ($page == "") {
+                        include "home_pegawai.php";
+                    } elseif (in_array($page, ['users'])) {
+                        include "controller/users.php";
+                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
+                      include 'controller/booking.php';
+                    }
+                     else {
+                        echo "<script>alert('Akses ditolak');history.back();</script>";
+                    }
+                } else {
+                    echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
                 }
               ?>
 
@@ -393,5 +412,9 @@
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+    <script>
+      new DataTable('#example');
+    </script>
   </body>
 </html>

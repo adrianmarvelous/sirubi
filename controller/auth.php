@@ -23,11 +23,11 @@
             $created_at = date('Y-m-d H:i:s');
             $role = 1; // Default role for new users
 
-            $insert = $db->prepare("INSERT INTO rb_users (name, email, password,role, created_at) VALUES (:name, :email, :password,:role,:created_at)");
+            $insert = $db->prepare("INSERT INTO rb_users (name, email, password,role_id, created_at) VALUES (:name, :email, :password,:role_id,:created_at)");
             $insert->bindParam(':name', $name);
             $insert->bindParam(':email', $email);
             $insert->bindParam(':password', $hashedPassword);
-            $insert->bindParam(':role', $role);
+            $insert->bindParam(':role_id', $role);
             $insert->bindParam(':created_at', $created_at);
             $insert->execute();
 
@@ -42,7 +42,7 @@
         $email = htmlentities($_POST['email']);
         $password = htmlentities($_POST['password']);
 
-        $q_user = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role = rb_role.id_role  WHERE email = :email");
+        $q_user = $db->prepare("SELECT * FROM rb_users JOIN rb_role ON rb_users.role_id = rb_role.id_role  WHERE email = :email");
         $q_user->bindParam(':email', $email);
         $q_user->execute();
 

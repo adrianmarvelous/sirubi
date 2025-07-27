@@ -11,22 +11,41 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
 
     <script>
+      const bookedDates = <?= json_encode($bookedDates) ?>;
       document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          selectable: true,
+      const calendarEl = document.getElementById('calendar');
 
-          dateClick: function (info) {
+      // Convert booked dates to FullCalendar event format
+      const bookedEvents = bookedDates.map(date => ({
+        start: date,
+        display: 'background',
+        backgroundColor: 'red'
+      }));
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+
+        events: bookedEvents, // 🔴 Highlight booked dates
+
+        dateClick: function (info) {
+          if (bookedDates.includes(info.dateStr)) {
+            // 🔴 Jika tanggal sudah dibooking, tampilkan modal unavailable
+            var modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
+            modal.show();
+          } else {
+            // ✅ Jika tersedia, buka modal booking
             document.getElementById('selected-date').textContent = info.dateStr;
             document.getElementById('selected-date-input').value = info.dateStr;
             var modal = new bootstrap.Modal(document.getElementById('dateModal'));
             modal.show();
           }
+        }
 
-        });
-        calendar.render();
       });
+
+      calendar.render();
+    });
     </script>
   </head>
   <body>
@@ -54,7 +73,7 @@
             <h5 class="modal-title" id="dateModalLabel">Pilih Tanggal Booking</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action="controller/calendar.php" method="post">
+          <form action="controller/booking.php" method="post">
             <div class="modal-body">
               <div class="mb-3 text-muted">
                 Tanggal yang dipilih: <strong id="selected-date" class="text-dark"></strong>
@@ -74,5 +93,23 @@
         </div>
       </div>
     </div>
+    <!-- Modal Tanggal Tidak Tersedia -->
+    <div class="modal fade" id="unavailableModal" tabindex="-1" aria-labelledby="unavailableModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-header bg-danger text-white rounded-top">
+            <h5 class="modal-title text-white" id="unavailableModalLabel">Tanggal Tidak Tersedia</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Maaf, tanggal ini sudah dibooking. Silakan pilih tanggal lain.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </body
