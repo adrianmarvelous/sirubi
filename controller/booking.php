@@ -94,6 +94,15 @@
         echo "Upload gagal. Pastikan kedua file adalah PDF.";
     }
   }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'create_part_2'){
+
+    if(htmlentities(isset($_GET['id_booking']))){
+      $id_booking = htmlentities($_GET['id_booking']);
+      $q_pemohon = $db->prepare("SELECT * FROM rb_booking WHERE id_booking = :id_booking");
+      $q_pemohon->BindParam(':id_booking',$id_booking);
+      $q_pemohon->execute();
+      $pemohon = $q_pemohon->fetch(PDO::FETCH_ASSOC);
+    }
+
     include 'view/booking/create_2.php';
   }elseif(htmlentities(isset($_POST['action'])) &&  htmlentities($_POST['action'] == 'save')){
     include '../config/koneksi.php';
@@ -178,6 +187,7 @@
     $pathSuratPermohonan = $_SESSION['temp']['surat_permohonan']; // full path
     $pathProposal = $_SESSION['temp']['proposal']; // full path
     $projectRoot = realpath(__DIR__ . '/../'); // gives C:/xampp/htdocs/sirubi
+    $path_spesimen = 'resources/upload/spesimen/'.$fileName;
 
     $pathSuratPermohonan = str_replace($projectRoot . DIRECTORY_SEPARATOR, '', $pathSuratPermohonan);
     $pathProposal = str_replace($projectRoot . DIRECTORY_SEPARATOR, '', $pathProposal);
@@ -187,7 +197,7 @@
     $max_id = $q_max_id->fetch(PDO::FETCH_ASSOC);
     $last_id = $max_id['max_id']+1;
 
-    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,upload_surat_permohonan,upload_proposal_rundown,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:upload_surat_permohonan,:upload_proposal_rundown,:created_at)");
+    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,upload_surat_permohonan,upload_proposal_rundown,spesimen,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:upload_surat_permohonan,:upload_proposal_rundown,:spesimen,:created_at)");
     $insert_booking->bindParam(':id_booking',$last_id);
     $insert_booking->bindParam(':id_user',$id_user);
     $insert_booking->bindParam(':name',$name);
@@ -197,6 +207,7 @@
     $insert_booking->bindParam(':nama_kegiatan',$nama_kegiatan);
     $insert_booking->bindParam(':upload_surat_permohonan',$pathSuratPermohonan);
     $insert_booking->bindParam(':upload_proposal_rundown',$pathProposal);
+    $insert_booking->bindParam(':spesimen',$path_spesimen);
     $insert_booking->bindParam(':created_at',$created_at);
     $insert_booking->execute();
 

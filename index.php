@@ -254,16 +254,25 @@
                     }
                 } elseif ($role_id == 2) {
                     if ($page == "") {
-                        include "home_pegawai.php";
+                        // include "home_pegawai.php";
                     } elseif (in_array($page, ['users'])) {
                         include "controller/users.php";
+                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve','create_part_2'])){
+                      include 'controller/booking.php';
+                    }
+                     else {
+                        echo "<script>alert('Akses ditolak');history.back();</script>";
+                    }
+                } elseif ($role_id == 3) {
+                    if ($page == "") {
+                        // include "home_pegawai.php";
                     } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
                       include 'controller/booking.php';
                     }
                      else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
-                } else {
+                }else {
                     echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
                 }
               ?>

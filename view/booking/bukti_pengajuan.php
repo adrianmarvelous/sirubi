@@ -1,5 +1,5 @@
 <div class="card">
-    <h1 class="text-center p-3">Bukti Pengajua Permohonan</h1>
+    <h1 class="text-center p-3">Bukti Pengajuan Permohonan</h1>
     <div class="container">
         <div class="border border-3 rounded p-3 mt-3">
             <h4 style="color: #737c85;">Data Diri</h2>
@@ -67,6 +67,7 @@
                     <label for="" class="fw-bold">Surat Pernyataan</label>
                 </div>
                 <div class="col-lg-9">
+                    <a class="btn btn-primary" href="?pages=create_part_2&id_booking=<?=$data_permohonan['id_booking']?>">View</a>
                     <!-- <a class="btn btn-primary" href="<?=$data_permohonan['upload_surat_permohonan']?>" target="_blank"><i class="bx bxs-file-pdf"></i></a> -->
                 </div>
             </div>
@@ -100,7 +101,7 @@
                 if(htmlentities($_SESSION['role_id']) == 1){
             ?>
                 <a class="btn btn-success w-100 m-3" href=""><i class="bx bx-bxl-whatsapp"></i></a>
-                <a class="btn btn-info w-100 m-3" href=""><i class="bx bx-printer"></i></a>
+                <a class="btn btn-info w-100 m-3" href="print/bukti_pengajuan.php?id_booking=<?=$data_permohonan['id_booking']?>" target="_blank"><i class="bx bx-printer"></i></a>
             <?php }else{
                     if(htmlentities($_SESSION['role_id']) == $data_permohonan['id_posisi_berkas']){    
             ?>

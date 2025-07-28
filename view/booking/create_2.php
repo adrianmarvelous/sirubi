@@ -23,7 +23,7 @@
                 <label for="">Nama</label>
             </div>
             <div class="col-lg-9 col-sm-12">
-                <p><?=htmlentities($_SESSION['temp']['name'])?></p>
+                <p><?= htmlentities(isset($pemohon) ? $pemohon['name'] : $_SESSION['temp']['name']) ?></p>
             </div>
         </div>
         <div class="row">
@@ -31,7 +31,7 @@
                 <label for="">Instansi</label>
             </div>
             <div class="col-lg-9 col-sm-12">
-                <p><?=htmlentities($_SESSION['temp']['instansi'])?></p>
+                <p><?= htmlentities(isset($pemohon) ? $pemohon['instansi'] : $_SESSION['temp']['instansi']) ?></p>
             </div>
         </div>
         <div class="row">
@@ -39,7 +39,7 @@
                 <label for="">No Telp</label>
             </div>
             <div class="col-lg-9 col-sm-12">
-                <p><?=htmlentities($_SESSION['temp']['telp'])?></p>
+                <p><?= htmlentities(isset($pemohon) ? $pemohon['telp'] : $_SESSION['temp']['telp']) ?></p>
             </div>
         </div>
         <div class="row">
@@ -47,7 +47,7 @@
                 <label for="">Alamat</label>
             </div>
             <div class="col-lg-9 col-sm-12">
-                <p><?=htmlentities($_SESSION['temp']['alamat'])?></p>
+                <p><?= htmlentities(isset($pemohon) ? $pemohon['alamat'] : $_SESSION['temp']['alamat']) ?></p>
             </div>
         </div>
         <p style="text-align: justify;">
@@ -123,7 +123,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12"></div>
-                <div class="col-lg-6 col-md-6 col-12 text-center">Surabaya, .....................</div>
+                <div class="col-lg-6 col-md-6 col-12 text-center">Surabaya, <?=htmlentities(isset($pemohon) ? date('d-m-Y',strtotime($pemohon['created_at'])) : '.................')?></div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12"></div>
@@ -133,6 +133,11 @@
                 <div class="col-lg-6 col-md-6 col-12"></div>
                 <div class="col-lg-6 col-md-6 col-12 text-center">
                     <div>
+                        <?php
+                            if(htmlentities(isset($pemohon))){?>
+                                <img src="<?=$pemohon['spesimen']?>" alt="">
+                            <?php }else{
+                        ?>
                         <form action="controller/booking.php" method="post">
                             <canvas id="signature-pad"></canvas>
                             <div class="buttons">
@@ -143,12 +148,13 @@
                                 <button type="submit" class="btn btn-primary" onclick="saveSignature()">Simpan</button>
                             </div>
                         </form>
+                        <?php }?>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12"></div>
-                <div class="col-lg-6 col-md-6 col-12 text-center"><?=htmlentities($_SESSION['temp']['name'])?></div>
+                <div class="col-lg-6 col-md-6 col-12 text-center"><?=htmlentities(isset($pemohon) ? $pemohon['name'] : $_SESSION['temp']['name'])?></div>
             </div>
         </div>
     </div>
