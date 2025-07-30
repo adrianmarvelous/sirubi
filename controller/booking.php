@@ -241,6 +241,14 @@
     $q_tanggal->bindParam(':id', $id);
     $q_tanggal->execute();
     $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+
+    $q_balasan = $db->prepare("SELECT * FROM rb_surat_balasan WHERE id_booking = :id_booking");
+    $q_balasan->bindParam(':id_booking',$id);
+    $q_balasan->execute();
+
+    if($q_balasan->rowCount() > 0){
+        $balasan = $q_balasan->fetchAll(PDO::FETCH_ASSOC);
+    }
     
 
     // Merge tanggal array into main array
@@ -271,20 +279,46 @@
     $q_permohonan->execute();
     $permohonan = $q_permohonan->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($permohonan as $key => &$value) {
+    foreach ($permohonan as $key => &$item) {
       // Get all related tanggal_booking
       $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking WHERE id_booking = :id");
-      $q_tanggal->bindParam(':id', $value['id_booking']);
+      $q_tanggal->bindParam(':id', $item['id_booking']);
       $q_tanggal->execute();
       $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
       
 
       // Merge tanggal array into main array
-      $value['tanggal'] = $data_tanggal;
+      $item['tanggal'] = $data_tanggal;
     }
-    
+    // dd($permohonan);
     include 'view/booking/list_booking.php';
   }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'ditolak'){
+    include '../config/koneksi.php';
+    $id_booking = htmlentities($_GET['id_booking']);
+    $status_balasan = 'ditolak';
+    $alasan = htmlentities($_GET['alasan']);
+    $id_user = htmlentities($_SESSION['id_user']);
+    $created_at = date('Y-m-d H:i:s');
+
+    $create = $db->prepare("INSERT INTO rb_surat_balasan (id_booking,status_balasan,alasan,id_user,created_at) VALUES (:id_booking,:status_balasan,:alasan,:id_user,:created_at)");
+    $create->bindParam(':id_booking',$id_booking);
+    $create->bindParam(':status_balasan',$status_balasan);
+    $create->bindParam(':alasan',$alasan);
+    $create->bindParam(':id_user',$id_user);
+    $create->bindParam(':created_at',$created_at);
+    $create->execute();
+
+    $update = $db->prepare("UPDATE rb_booking SET id_posisi_berkas = 1 WHERE id_booking = :id_booking");
+    $update->bindParam(':id_booking',$id_booking);
+    $update->execute();
+    
+    $_SESSION['alert'] = [
+        'type' => 'danger',
+        'message' => 'Berhasil ditolak.'
+    ];
+    
+        header('Location: ../index.php?pages=list_booking');
+
   }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'approve'){
     $id_booking = htmlentities($_GET['id_booking']);
     $id_posisi_berkas = htmlentities($_GET['id_posisi_berkas']);

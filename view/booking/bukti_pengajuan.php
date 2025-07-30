@@ -60,7 +60,7 @@
                 </div>
             <?php }?>
         </div>
-        <div class="border border-3 rounded p-3 mt-3">
+        <div class="border border-3 rounded p-3 mt-3 mb-3">
             <h4 style="color: #737c85;">Data Pendukung</h2>
             <div class="row">
                 <div class="col-lg-3">
@@ -96,6 +96,34 @@
                 </div>
             </div>
         </div>
+        <?php
+            if(htmlentities(isset($balasan))){
+        ?>
+        <div class="border border-3 rounded p-3 mt-3 mb-3">
+            <h4 style="color: #737c85;">History Balasan</h2>
+            <?php
+                foreach ($balasan as $key_balasan => $value_balasan) {
+            ?>
+                <h5>Balasan ke <?=$key_balasan+1?></h5>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="" class="fw-bold">Tanggal</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <p><?=date('d-M-Y H:i',strtotime($value_balasan['created_at']))?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="" class="fw-bold">Alasan</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <p><?=$value_balasan['alasan']?></p>
+                    </div>
+                </div>
+            <?php }?>
+        </div>
+        <?php }?>
         <div class="d-flex">
             <?php
                 if(htmlentities($_SESSION['role_id']) == 1){
@@ -120,14 +148,14 @@
                             <form action="controller/booking.php" method="get">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <textarea name="" class="form-control w-100 o" id=""></textarea>
+                                        <textarea name="alasan" class="form-control w-100 o" id=""></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <input type="hidden" name="id_booking" value="<?=$data_permohonan['id_booking']?>">
                                     <input type="hidden" name="pages" value="ditolak">
                                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <button type="submit" class="btn btn-danger">Tolak</button>
                                 </div>
                             </form>
                         </div>
