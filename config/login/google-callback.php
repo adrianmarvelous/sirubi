@@ -28,9 +28,14 @@ if (isset($_GET['code'])) {
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
+            $q_max_id = $db->prepare("SELECT max(id_user) as id_user FROM rb_userss");
+            $q_max_id->execute();
+            $max_id = $q_max_id->fetch(PDO::FETCH_ASSOC);
+            $last_id = $max_id['id_user']+1;
             // Insert new user
-            $stmt_insert = $db->prepare("INSERT INTO rb_users (name, email, google_id, picture, role, created_at)
-                VALUES (:name, :email, :google_id, :picture, :role, :created_at)");
+            $stmt_insert = $db->prepare("INSERT INTO rb_users (id_user,name, email, google_id, picture, role, created_at)
+                VALUES (:id_user,:name, :email, :google_id, :picture, :role, :created_at)");
+            $stmt_insert->bindParam(':id_user', $last_id);
             $stmt_insert->bindParam(':name', $user->name);
             $stmt_insert->bindParam(':email', $user->email);
             $stmt_insert->bindParam(':google_id', $user->id);
@@ -40,7 +45,7 @@ if (isset($_GET['code'])) {
             $stmt_insert->execute();
 
             // Set session manually
-            $_SESSION['id_user'] = $user->id_user;
+            $_SESSION['id_user'] = $user->last_id;
             $_SESSION['name'] = $user->user_name;
             $_SESSION['email'] = $user->user_email;
             $_SESSION['role_id'] = $role_id;

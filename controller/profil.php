@@ -8,6 +8,7 @@
             $instansi = htmlentities($_GET['instansi']);
             $telp = htmlentities($_GET['telp']);
             $alamat = htmlentities($_GET['alamat']);
+            
 
             $update = $db->prepare("UPDATE rb_users SET name = :name, instansi = :instansi, telp = :telp, alamat = :alamat WHERE id_user = :id_user");
             $update->bindParam(':id_user', $id_user);

@@ -21,6 +21,18 @@
     $telp = htmlentities($_POST['telp']);
     $alamat = htmlentities($_POST['alamat']);
     $nama_kegiatan = htmlentities($_POST['nama_kegiatan']);
+            // Remove non-digit characters (optional, if you want pure digits only)
+            $telp = preg_replace('/\D/', '', $telp);
+
+            // Check if NOT 12 or 13 digits
+            if (!preg_match('/^\d{12,13}$/', $telp)) {
+                $_SESSION['alert'] = [
+                    'type' => 'danger', // 'success', 'info', 'warning', or 'danger'
+                    'message' => 'Mohon cek nomer telp kembali!'
+                ];
+                echo "<script>history.back();</script>";
+                exit;
+            }
 
     for ($i=0; $i < count($tanggal_peminjaman) ; $i++) { 
       $q_check_tanggal = $db->prepare("SELECT tanggal FROM rb_tanggal_booking WHERE tanggal = :tanggal");

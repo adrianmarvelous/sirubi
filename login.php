@@ -60,8 +60,8 @@ session_start();
     <!-- Content -->
 
     <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner">
+      <!-- <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner"> -->
           <!-- Register -->
           <div class="card px-sm-6 px-0">
             <div class="card-body">
@@ -73,78 +73,85 @@ session_start();
                 <?php unset($_SESSION['alert']); ?>
               <?php endif; ?>
               <!-- Logo -->
-              <div class="app-brand justify-content-center">
-                <a href="index.html" class="app-brand-link gap-2">
-                  <span class="app-brand-text demo text-heading fw-bold">Sirubi</span>
-                </a>
-              </div>
-              <!-- /Logo -->
-              <h4 class="mb-1">Welcome to Sirubi!</h4>
-              <p class="mb-6">Please sign-in to your account and start the adventure</p>
-
-              <form id="formAuthentication" class="mb-6" action="controller/auth.php" method="POST">
-                <div class="mb-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Masukan Email"
-                    autofocus required/>
+              <div class="row">
+                <div class="col-lg-8 d-none d-lg-block">
+                  <img src="resources/img/bg-sirubi.jpeg" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Background Image">
                 </div>
-                <div class="mb-6 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" required/>
-                    <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <!-- <div class="mb-8">
-                  <div class="d-flex justify-content-between">
-                    <div class="form-check mb-0">
-                      <input class="form-check-input" type="checkbox" id="remember-me" />
-                      <label class="form-check-label" for="remember-me"> Remember Me </label>
-                    </div>
-                    <a href="auth-forgot-password-basic.html">
-                      <span>Forgot Password?</span>
+                <div class="col-lg-4">
+                  <div class="app-brand justify-content-center">
+                    <a href="index.html" class="app-brand-link gap-2">
+                      <span class="app-brand-text demo text-heading fw-bold">Sirubi</span>
                     </a>
                   </div>
-                </div> -->
-                <div class="mb-6">
-                  <input type="hidden" name="action" value="login" id="">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
-                  <hr>
-                  <?php
-                      require_once 'config/login/config-google.php';
+                  <!-- /Logo -->
+                  <h4 class="mb-1">Welcome to Sirubi!</h4>
+                  <p class="mb-6">Please sign-in to your account and start the adventure</p>
 
-                      $loginUrl = $client->createAuthUrl();
-                  ?>
-                  <a href="<?= $loginUrl ?>" style="background-color: #fff; color: #444; border: 1px solid #ccc; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" 
-                    class="btn d-flex align-items-center justify-content-center mb-3">
-                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width:20px; height:20px;" class="me-2">
-                    Login with Google
-                  </a>
+                  <form id="formAuthentication" class="mb-6" action="controller/auth.php" method="POST">
+                    <div class="mb-6">
+                      <label for="email" class="form-label">Email</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Masukan Email"
+                        autofocus required/>
+                    </div>
+                    <div class="mb-6 form-password-toggle">
+                      <label class="form-label" for="password">Password</label>
+                      <div class="input-group input-group-merge">
+                        <input
+                          type="password"
+                          id="password"
+                          class="form-control"
+                          name="password"
+                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                          aria-describedby="password" required/>
+                        <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
+                      </div>
+                    </div>
+                    <!-- <div class="mb-8">
+                      <div class="d-flex justify-content-between">
+                        <div class="form-check mb-0">
+                          <input class="form-check-input" type="checkbox" id="remember-me" />
+                          <label class="form-check-label" for="remember-me"> Remember Me </label>
+                        </div>
+                        <a href="auth-forgot-password-basic.html">
+                          <span>Forgot Password?</span>
+                        </a>
+                      </div>
+                    </div> -->
+                    <div class="mb-6">
+                      <input type="hidden" name="action" value="login" id="">
+                      <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                      <hr>
+                      <?php
+                          require_once 'config/login/config-google.php';
+
+                          $loginUrl = $client->createAuthUrl();
+                      ?>
+                      <a href="<?= $loginUrl ?>" style="background-color: #fff; color: #444; border: 1px solid #ccc; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" 
+                        class="btn d-flex align-items-center justify-content-center mb-3">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width:20px; height:20px;" class="me-2">
+                        Login with Google
+                      </a>
+                    </div>
+                  </form>
+
+                  <p class="text-center">
+                    <span>Belum punya akun?</span>
+                    <a href="register.php">
+                      <span>Buat Akun Baru</span>
+                    </a>
+                  </p>
                 </div>
-              </form>
-
-              <p class="text-center">
-                <span>Belum punya akun?</span>
-                <a href="register.php">
-                  <span>Buat Akun Baru</span>
-                </a>
-              </p>
+              </div>
             </div>
           </div>
           <!-- /Register -->
-        </div>
-      </div>
+        <!-- </div>
+      </div> -->
     </div>
 
     <!-- / Content -->

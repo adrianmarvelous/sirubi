@@ -1,3 +1,22 @@
+
+<style>
+  .fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+
+  .fab:hover {
+    transform: scale(1.05);
+  }
+</style>
 <div class="row">
 
     <div class="col-xl-4 col-md-12 mb-4">
@@ -62,4 +81,8 @@
             </div>
         </div>
     </div>
+    <!-- Floating Action Button -->
+    <a href="index.php?pages=calendar_booking" class="btn btn-primary fab">
+        Booking sekarang <i class="bx bx-plus"></i> <!-- Use any icon -->
+    </a>
 </div>

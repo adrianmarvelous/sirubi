@@ -21,7 +21,7 @@
                         <td>
                             <?php
                                 foreach ($value['tanggal'] as $key => $tanggal) {
-                                    echo $tanggal['tanggal']; echo '<br>';
+                                    echo date('d-M-Y',strtotime( $tanggal['tanggal'])); echo '<br>';
                                 }
                             ?>
                         </td>

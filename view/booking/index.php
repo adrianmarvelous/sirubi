@@ -51,11 +51,11 @@
   <body>
     <div class="container py-4">
       <div class="card p-4 shadow-sm">
-        <h5 class="mb-3">Booking Form</h5>
+        <!-- <h5 class="mb-3">Booking Form</h5>
         <form action="#" class="d-flex flex-wrap gap-2 mb-4">
           <input type="date" class="form-control flex-grow-1" />
           <button class="btn btn-primary" type="submit">Book</button>
-        </form>
+        </form> -->
 
         <!-- Responsive Calendar -->
         <div class="table-responsive">

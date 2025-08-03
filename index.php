@@ -70,6 +70,17 @@
     <script src="assets/sneat/assets/js/config.js"></script>
   </head>
 
+  <style>
+    body {
+      background-image: url('resources/img/bg-sirubi.jpeg');
+      background-size: cover;         /* make the image cover the entire screen */
+      background-repeat: no-repeat;   /* prevent repeating */
+      background-position: center;    /* center the image */
+      background-attachment: fixed; /* makes the image fixed and not scroll */
+      height: 100vh;                  /* full screen height */
+      margin: 0;
+    }
+  </style>
   <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -282,7 +293,7 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                      <h5 class="modal-title" id="exampleModalLabel1">Lengkapi Data Diri</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="controller/profil.php" method="get">
@@ -341,42 +352,10 @@
                 <div
                   class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
                   <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                    , made with ❤️ by
-                    <a href="https://themeselection.com" target="_blank" class="footer-link">ThemeSelection</a>
+                   © Sirubi 2025 
+                    
                   </div>
                   <div class="d-none d-lg-inline-block">
-                    <a
-                      href="https://themeselection.com/item/category/admin-templates/"
-                      target="_blank"
-                      class="footer-link me-4"
-                      >Admin Templates</a
-                    >
-
-                    <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                    <a
-                      href="https://themeselection.com/item/category/bootstrap-admin-templates/"
-                      target="_blank"
-                      class="footer-link me-4"
-                      >Bootstrap Dashboard</a
-                    >
-
-                    <a
-                      href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                      target="_blank"
-                      class="footer-link me-4"
-                      >Documentation</a
-                    >
-
-                    <a
-                      href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free/issues"
-                      target="_blank"
-                      class="footer-link"
-                      >Support</a
-                    >
                   </div>
                 </div>
               </div>
