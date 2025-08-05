@@ -92,7 +92,16 @@
                     <label for="" class="fw-bold">Posisi Berkas</label>
                 </div>
                 <div class="col-lg-9">
-                    <p><?=$data_permohonan['posisi']?></p>
+                    <p>
+                        <?php
+                        if($data_permohonan['id_posisi_berkas'] != 6)
+                        {
+                            echo $data_permohonan['posisi'];
+                        }else{?>
+                            <a class="btn btn-primary" href="">Surat Balasan</a>
+                        <?php }
+                        ?>
+                    </p>
                 </div>
             </div>
         </div>
