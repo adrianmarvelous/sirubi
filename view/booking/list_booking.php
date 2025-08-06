@@ -28,7 +28,14 @@
                         <td><?=$value['nama_kegiatan']?></td>
                         <td><?=$value['instansi']?></td>
                         <td><?=$value['posisi']?></td>
-                        <td><a class="btn btn-primary" href="?pages=pengajuan_selesai&id=<?=$value['id_booking']?>">Detail</a></td>
+                        <td>
+                            <a class="btn btn-primary" href="?pages=pengajuan_selesai&id=<?=$value['id_booking']?>">Detail</a>
+                            <?php
+                                if($value['id_posisi_berkas'] == 6){
+                            ?>
+                            <a class="btn btn-info" href="?pages=laporan&id=<?=$value['id_booking']?>">Laporan</a>
+                            <?php }?>
+                        </td>
                     </tr>
                 <?php }?>
             </tbody>

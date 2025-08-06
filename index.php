@@ -261,7 +261,9 @@
                         include "home.php";
                     } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking'])) {
                         include "controller/booking.php";
-                    } else {
+                    } elseif (in_array($page,['laporan'])){
+                        include "controller/laporan.php";
+                    }else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
                 } elseif ($role_id == 2) {
