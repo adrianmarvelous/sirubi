@@ -362,8 +362,7 @@
     ];
     
     include 'view/booking/list_booking.php';
-  }
-  else{
+  }else{
     
       $q_tanggal = $db->prepare("SELECT tanggal FROM rb_tanggal_booking");
       $q_tanggal->execute();

@@ -62,7 +62,7 @@ session_start();
       <!-- <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner"> -->
           <!-- Register Card -->
-          <div class="card px-sm-6 px-0">
+          <div class="card px-sm-6 px-0" style="margin-top: 4rem;">
             <div class="card-body">
               <?php if (isset($_SESSION['alert'])): ?>
                 <div class="alert alert-<?= $_SESSION['alert']['type'] ?> alert-dismissible fade show" role="alert">

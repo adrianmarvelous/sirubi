@@ -30,8 +30,9 @@
 
     <meta name="description" content="" />
 
+	  <link rel="icon" href="assets/logo/Logo Kota Surabaya.png" type="image/x-icon"/>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/sneat/assets/img/favicon/favicon.ico" />
+    <!-- <link rel="icon" type="image/x-icon" href="assets/sneat/assets/img/favicon/favicon.ico" /> -->
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

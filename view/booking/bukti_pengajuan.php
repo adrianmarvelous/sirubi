@@ -98,7 +98,7 @@
                         {
                             echo $data_permohonan['posisi'];
                         }else{?>
-                            <a class="btn btn-primary" href="">Surat Balasan</a>
+                            <a class="btn btn-primary" href="print/surat_ijin.php">Surat Balasan</a>
                         <?php }
                         ?>
                     </p>
