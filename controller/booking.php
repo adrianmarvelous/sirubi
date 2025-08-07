@@ -265,7 +265,7 @@
 
     // Merge tanggal array into main array
     $data_permohonan['tanggal'] = $data_tanggal;
-
+    // dd($data_permohonan);
     include 'view/booking/bukti_pengajuan.php';
   }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'list_booking'){
     $id_user = htmlentities($_SESSION['id_user']);
