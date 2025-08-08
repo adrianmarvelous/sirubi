@@ -31,7 +31,7 @@
                         <td>
                             <a class="btn btn-primary" href="?pages=pengajuan_selesai&id=<?=$value['id_booking']?>">Detail</a>
                             <?php
-                                if($value['id_posisi_berkas'] == 6){
+                                if($value['id_posisi_berkas'] == 7){
                             ?>
                             <a class="btn btn-info" href="?pages=laporan&id=<?=$value['id_booking']?>">Laporan</a>
                             <?php }?>

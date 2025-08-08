@@ -105,6 +105,22 @@
                 <h4 class="fw-bold" style="color: #737c85;">Data Pendukung</h2>
                 <div class="row mt-3">
                     <div class="col-lg-3">
+                        <label class="fw-bold" for="">Nomer Surat Permohonan</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control" name="nomor_surat_permohonan" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-3">
+                        <label class="fw-bold" for="">Tanggal Surat Permohonan</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <input type="date" class="form-control" name="tanggal_surat_permohonan" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-3">
                         <label class="fw-bold" for="">Upload Surat Permohonan</label>
                     </div>
                     <div class="col-lg-9">

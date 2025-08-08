@@ -64,6 +64,22 @@
             <h4 style="color: #737c85;">Data Pendukung</h2>
             <div class="row">
                 <div class="col-lg-3">
+                    <label for="" class="fw-bold">Nomor Surat Permohonan</label>
+                </div>
+                <div class="col-lg-9">
+                    <p><?=$data_permohonan['nomor_surat_permohonan']?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="" class="fw-bold">Tanggal Surat Permohonan</label>
+                </div>
+                <div class="col-lg-9">
+                    <p><?=date('d-M-Y',strtotime($data_permohonan['tanggal_surat_permohonan']))?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
                     <label for="" class="fw-bold">Surat Pernyataan</label>
                 </div>
                 <div class="col-lg-9">
@@ -94,11 +110,11 @@
                 <div class="col-lg-9">
                     <p>
                         <?php
-                        if($data_permohonan['id_posisi_berkas'] != 6)
+                        if($data_permohonan['id_posisi_berkas'] != 7)
                         {
                             echo $data_permohonan['posisi'];
                         }else{?>
-                            <a class="btn btn-primary" href="print/surat_ijin.php">Surat Balasan</a>
+                            <a class="btn btn-primary" href="print/surat_ijin.php?id=<?=$data_permohonan['id_booking']?>">Surat Balasan</a>
                         <?php }
                         ?>
                     </p>
@@ -200,6 +216,56 @@
                     </div>
                 </div>
 
+            <?php }elseif(htmlentities($_SESSION['role_id']) == 2 && $data_permohonan['id_posisi_berkas'] == 6){?>
+
+                <button type="button" class="btn btn-primary w-100 m-3" data-bs-toggle="modal" data-bs-target="#basicModalnomor_surat">
+                Masukan Nomor Surat
+                </button>
+                <!-- Button trigger modal -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="basicModalnomor_surat" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Masukan Nomor Surat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="" method="get">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label for="" class="fw-bold">Masukan Nomor Surat Balasan</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <input type="text" class="form-control" name="nomor_surat_balasan" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12">
+                                            <label for="" class="fw-bold">Masukan Tanggal Surat Balasan</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <input type="date" class="form-control" name="tanggal_surat_balasan" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="hidden" name="id_booking" value="<?=$data_permohonan['id_booking']?>">
+                                    <input type="hidden" name="id_posisi_berkas" value="<?=$data_permohonan['id_posisi_berkas']?>">
+                                    <input type="hidden" name="pages" value="approve">
+                                    <input type="hidden" name="sub_pages" value="input_nomor_surat">
+                                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             <?php }}?>
         </div>
     </div>

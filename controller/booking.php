@@ -21,6 +21,8 @@
     $telp = htmlentities($_POST['telp']);
     $alamat = htmlentities($_POST['alamat']);
     $nama_kegiatan = htmlentities($_POST['nama_kegiatan']);
+    $nomor_surat_permohonan = htmlentities($_POST['nomor_surat_permohonan']);
+    $tanggal_surat_permohonan = htmlentities($_POST['tanggal_surat_permohonan']);
             // Remove non-digit characters (optional, if you want pure digits only)
             $telp = preg_replace('/\D/', '', $telp);
 
@@ -98,6 +100,8 @@
         $_SESSION['temp']['telp'] = $telp;
         $_SESSION['temp']['alamat'] = $alamat;
         $_SESSION['temp']['nama_kegiatan'] = $nama_kegiatan;
+        $_SESSION['temp']['nomor_surat_permohonan'] = $nomor_surat_permohonan;
+        $_SESSION['temp']['tanggal_surat_permohonan'] = $tanggal_surat_permohonan;
 
         // Redirect to next form step
         header('Location: ../index.php?pages=create_part_2');
@@ -132,6 +136,8 @@
     $telp = htmlentities($_SESSION['temp']['telp']);
     $alamat = htmlentities($_SESSION['temp']['alamat']);
     $nama_kegiatan = htmlentities($_SESSION['temp']['nama_kegiatan']);
+    $nomor_surat_permohonan = htmlentities($_SESSION['temp']['nomor_surat_permohonan']);
+    $tanggal_surat_permohonan = htmlentities($_SESSION['temp']['tanggal_surat_permohonan']);
     $upload_surat_permohonan = htmlentities($_SESSION['temp']['surat_permohonan']);
     $upload_proposal_rundown = htmlentities($_SESSION['temp']['proposal']);
     $base64Image = $_POST['signature_image'];
@@ -209,7 +215,7 @@
     $max_id = $q_max_id->fetch(PDO::FETCH_ASSOC);
     $last_id = $max_id['max_id']+1;
 
-    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,upload_surat_permohonan,upload_proposal_rundown,spesimen,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:upload_surat_permohonan,:upload_proposal_rundown,:spesimen,:created_at)");
+    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,nomor_surat_permohonan,tanggal_surat_permohonan,upload_surat_permohonan,upload_proposal_rundown,spesimen,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:nomor_surat_permohonan,:tanggal_surat_permohonan,:upload_surat_permohonan,:upload_proposal_rundown,:spesimen,:created_at)");
     $insert_booking->bindParam(':id_booking',$last_id);
     $insert_booking->bindParam(':id_user',$id_user);
     $insert_booking->bindParam(':name',$name);
@@ -217,6 +223,8 @@
     $insert_booking->bindParam(':telp',$telp);
     $insert_booking->bindParam(':alamat',$alamat);
     $insert_booking->bindParam(':nama_kegiatan',$nama_kegiatan);
+    $insert_booking->bindParam(':nomor_surat_permohonan',$nomor_surat_permohonan);
+    $insert_booking->bindParam(':tanggal_surat_permohonan',$tanggal_surat_permohonan);
     $insert_booking->bindParam(':upload_surat_permohonan',$pathSuratPermohonan);
     $insert_booking->bindParam(':upload_proposal_rundown',$pathProposal);
     $insert_booking->bindParam(':spesimen',$path_spesimen);
@@ -309,14 +317,12 @@
     $id_booking = htmlentities($_GET['id_booking']);
     $status_balasan = 'ditolak';
     $alasan = htmlentities($_GET['alasan']);
-    $id_user = htmlentities($_SESSION['id_user']);
     $created_at = date('Y-m-d H:i:s');
 
-    $create = $db->prepare("INSERT INTO rb_surat_balasan (id_booking,status_balasan,alasan,id_user,created_at) VALUES (:id_booking,:status_balasan,:alasan,:id_user,:created_at)");
+    $create = $db->prepare("INSERT INTO rb_surat_balasan (id_booking,status_balasan,alasan,created_at) VALUES (:id_booking,:status_balasan,:alasan,:created_at)");
     $create->bindParam(':id_booking',$id_booking);
     $create->bindParam(':status_balasan',$status_balasan);
     $create->bindParam(':alasan',$alasan);
-    $create->bindParam(':id_user',$id_user);
     $create->bindParam(':created_at',$created_at);
     $create->execute();
 
@@ -341,20 +347,36 @@
     $update->bindParam(':id_booking',$id_booking);
     $update->execute();
 
+    if(htmlentities(isset($_GET['sub_pages']))){
+      $nomor_surat_balasan = htmlentities($_GET['nomor_surat_balasan']);
+      $tanggal_surat_balasan = htmlentities($_GET['tanggal_surat_balasan']);
+      $id_booking = htmlentities($_GET['id_booking']);
+      $status_balasan = 'ditolak';
+      $created_at = date('Y-m-d H:i:s');
+
+      $create = $db->prepare("INSERT INTO rb_surat_balasan (id_booking,status_balasan,nomor_surat_balasan,tanggal_surat_balasan,created_at) VALUES (:id_booking,:status_balasan,:nomor_surat_balasan,:tanggal_surat_balasan,:created_at)");
+      $create->bindParam(':id_booking',$id_booking);
+      $create->bindParam(':status_balasan',$status_balasan);
+      $create->bindParam(':nomor_surat_balasan',$nomor_surat_balasan);
+      $create->bindParam(':tanggal_surat_balasan',$tanggal_surat_balasan);
+      $create->bindParam(':created_at',$created_at);
+      $create->execute();
+    }
+
     $q_permohonan = $db->prepare("SELECT * FROM rb_booking JOIN rb_posisi_berkas ON rb_booking.id_posisi_berkas = rb_posisi_berkas.id_posisi_berkas");
     $q_permohonan->execute();
     $permohonan = $q_permohonan->fetchAll(PDO::FETCH_ASSOC);
     
-    foreach ($permohonan as $key => &$value) {
+    foreach ($permohonan as $key => &$value_) {
       // Get all related tanggal_booking
       $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking WHERE id_booking = :id");
-      $q_tanggal->bindParam(':id', $value['id_booking']);
+      $q_tanggal->bindParam(':id', $value_['id_booking']);
       $q_tanggal->execute();
       $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
       
 
       // Merge tanggal array into main array
-      $value['tanggal'] = $data_tanggal;
+      $value_['tanggal'] = $data_tanggal;
     }
     $_SESSION['alert'] = [
         'type' => 'success',
