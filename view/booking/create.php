@@ -121,6 +121,14 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-lg-3">
+                        <label class="fw-bold" for="">Perihal Surat Permohonan</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control" name="perihal_surat_permohonan" required>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-3">
                         <label class="fw-bold" for="">Upload Surat Permohonan</label>
                     </div>
                     <div class="col-lg-9">

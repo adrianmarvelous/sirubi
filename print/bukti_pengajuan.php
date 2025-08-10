@@ -5,14 +5,18 @@ require_once '../config/koneksi.php';
 $id_booking = htmlentities($_GET['id_booking']);
 
 // Get booking data
-$q_data_permohonan = $db->prepare("SELECT * FROM rb_booking JOIN rb_posisi_berkas ON rb_booking.id_posisi_berkas = rb_posisi_berkas.id_posisi_berkas WHERE id_booking = :id");
+$q_data_permohonan = $db->prepare("
+    SELECT * FROM rb_booking 
+    JOIN rb_posisi_berkas ON rb_booking.id_posisi_berkas = rb_posisi_berkas.id_posisi_berkas 
+    WHERE id_booking = :id
+");
 $q_data_permohonan->bindParam(':id', $id_booking);
 $q_data_permohonan->execute();
 $data = $q_data_permohonan->fetch(PDO::FETCH_ASSOC);
 
-// Fix variable name here
+// Get tanggal booking
 $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking WHERE id_booking = :id");
-$q_tanggal->bindParam(':id', $id_booking); // Fix: should be $id_booking
+$q_tanggal->bindParam(':id', $id_booking);
 $q_tanggal->execute();
 $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
 
@@ -39,30 +43,31 @@ foreach ($data['tanggal'] as $key => $value) {
     </tr>";
 }
 
-// Main content HTML
-$html = <<<EOD
-<h1 style='text-align:center;'>Bukti Pengajuan Permohonan</h1>
+// Build full HTML content
+$html = '
+<h1 style="text-align:center;">Bukti Pengajuan Permohonan</h1>
+
 <h3>Data Diri</h3>
 <table cellpadding="5" style="width:100%;">
     <tr>
         <td style="width:100px; white-space:nowrap">Nama</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td style="width:200px; white-space:nowrap">{$data['name']}</td>
+        <td style="width:200px; white-space:nowrap">' . $data['name'] . '</td>
     </tr>
     <tr>
         <td>Instansi</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td>{$data['instansi']}</td>
+        <td>' . $data['instansi'] . '</td>
     </tr>
     <tr>
         <td>No Telp</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td>{$data['telp']}</td>
+        <td>' . $data['telp'] . '</td>
     </tr>
     <tr>
         <td>Alamat</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td>{$data['alamat']}</td>
+        <td>' . $data['alamat'] . '</td>
     </tr>
 </table>
 
@@ -71,18 +76,36 @@ $html = <<<EOD
     <tr>
         <td style="width:100px; white-space:nowrap">Nama Kegiatan</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td style="width:200px; white-space:nowrap">{$data['nama_kegiatan']}</td>
+        <td style="width:200px; white-space:nowrap">' . $data['nama_kegiatan'] . '</td>
     </tr>
     <tr>
         <td>Instansi</td>
         <td style="width:50px; white-space:nowrap">:</td>
-        <td>{$data['instansi']}</td>
+        <td>' . $data['instansi'] . '</td>
     </tr>
-    $tanggal_rows
+    ' . $tanggal_rows . '
 </table>
-EOD;
 
-// Write content and output
+<h3>Data Pendukung</h3>
+<table cellpadding="5" style="width:100%;">
+    <tr>
+        <td style="width:100px; white-space:nowrap">Nomor Surat Permohonan</td>
+        <td style="width:50px; white-space:nowrap">:</td>
+        <td style="width:200px; white-space:nowrap">' . $data['nomor_surat_permohonan'] . '</td>
+    </tr>
+    <tr>
+        <td style="width:100px; white-space:nowrap">Tanggal Surat Permohonan</td>
+        <td style="width:50px; white-space:nowrap">:</td>
+        <td style="width:200px; white-space:nowrap">' . date('d-M-Y', strtotime($data['tanggal_surat_permohonan'])) . '</td>
+    </tr>
+    <tr>
+        <td style="width:100px; white-space:nowrap">Perihal Surat Permohonan</td>
+        <td style="width:50px; white-space:nowrap">:</td>
+        <td style="width:200px; white-space:nowrap">' . $data['perihal_surat_permohonan'] . '</td>
+    </tr>
+</table>
+';
+
+// Output to PDF
 $pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output('simple_example.pdf', 'I');
-?>
+$pdf->Output('bukti_pengajuan_permohonan.pdf', 'I');

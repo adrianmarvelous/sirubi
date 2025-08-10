@@ -80,6 +80,14 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
+                    <label for="" class="fw-bold">Perihal Surat Permohonan</label>
+                </div>
+                <div class="col-lg-9">
+                    <p><?=$data_permohonan['perihal_surat_permohonan']?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
                     <label for="" class="fw-bold">Surat Pernyataan</label>
                 </div>
                 <div class="col-lg-9">

@@ -23,6 +23,7 @@
     $nama_kegiatan = htmlentities($_POST['nama_kegiatan']);
     $nomor_surat_permohonan = htmlentities($_POST['nomor_surat_permohonan']);
     $tanggal_surat_permohonan = htmlentities($_POST['tanggal_surat_permohonan']);
+    $perihal_surat_permohonan = htmlentities($_POST['perihal_surat_permohonan']);
             // Remove non-digit characters (optional, if you want pure digits only)
             $telp = preg_replace('/\D/', '', $telp);
 
@@ -102,6 +103,7 @@
         $_SESSION['temp']['nama_kegiatan'] = $nama_kegiatan;
         $_SESSION['temp']['nomor_surat_permohonan'] = $nomor_surat_permohonan;
         $_SESSION['temp']['tanggal_surat_permohonan'] = $tanggal_surat_permohonan;
+        $_SESSION['temp']['perihal_surat_permohonan'] = $perihal_surat_permohonan;
 
         // Redirect to next form step
         header('Location: ../index.php?pages=create_part_2');
@@ -138,6 +140,7 @@
     $nama_kegiatan = htmlentities($_SESSION['temp']['nama_kegiatan']);
     $nomor_surat_permohonan = htmlentities($_SESSION['temp']['nomor_surat_permohonan']);
     $tanggal_surat_permohonan = htmlentities($_SESSION['temp']['tanggal_surat_permohonan']);
+    $perihal_surat_permohonan = htmlentities($_SESSION['temp']['perihal_surat_permohonan']);
     $upload_surat_permohonan = htmlentities($_SESSION['temp']['surat_permohonan']);
     $upload_proposal_rundown = htmlentities($_SESSION['temp']['proposal']);
     $base64Image = $_POST['signature_image'];
@@ -215,7 +218,7 @@
     $max_id = $q_max_id->fetch(PDO::FETCH_ASSOC);
     $last_id = $max_id['max_id']+1;
 
-    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,nomor_surat_permohonan,tanggal_surat_permohonan,upload_surat_permohonan,upload_proposal_rundown,spesimen,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:nomor_surat_permohonan,:tanggal_surat_permohonan,:upload_surat_permohonan,:upload_proposal_rundown,:spesimen,:created_at)");
+    $insert_booking = $db->prepare("INSERT INTO rb_booking (id_booking,id_user,name,instansi,telp,alamat,nama_kegiatan,nomor_surat_permohonan,tanggal_surat_permohonan,perihal_surat_permohonan,upload_surat_permohonan,upload_proposal_rundown,spesimen,created_at) VALUES (:id_booking,:id_user,:name,:instansi,:telp,:alamat,:nama_kegiatan,:nomor_surat_permohonan,:tanggal_surat_permohonan,:perihal_surat_permohonan,:upload_surat_permohonan,:upload_proposal_rundown,:spesimen,:created_at)");
     $insert_booking->bindParam(':id_booking',$last_id);
     $insert_booking->bindParam(':id_user',$id_user);
     $insert_booking->bindParam(':name',$name);
@@ -225,6 +228,7 @@
     $insert_booking->bindParam(':nama_kegiatan',$nama_kegiatan);
     $insert_booking->bindParam(':nomor_surat_permohonan',$nomor_surat_permohonan);
     $insert_booking->bindParam(':tanggal_surat_permohonan',$tanggal_surat_permohonan);
+    $insert_booking->bindParam(':perihal_surat_permohonan',$perihal_surat_permohonan);
     $insert_booking->bindParam(':upload_surat_permohonan',$pathSuratPermohonan);
     $insert_booking->bindParam(':upload_proposal_rundown',$pathProposal);
     $insert_booking->bindParam(':spesimen',$path_spesimen);
