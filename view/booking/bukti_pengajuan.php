@@ -122,7 +122,7 @@
                         {
                             echo $data_permohonan['posisi'];
                         }else{?>
-                            <a class="btn btn-primary" href="print/surat_ijin.php?id=<?=$data_permohonan['id_booking']?>">Surat Balasan</a>
+                            <a class="btn btn-primary" href="print/surat_ijin.php?id=<?=$data_permohonan['id_booking']?>" target="_blank">Surat Balasan</a>
                         <?php }
                         ?>
                     </p>
@@ -163,6 +163,11 @@
             ?>
                 <a class="btn btn-success w-100 m-3" href=""><i class="bx bx-bxl-whatsapp"></i></a>
                 <a class="btn btn-info w-100 m-3" href="print/bukti_pengajuan.php?id_booking=<?=$data_permohonan['id_booking']?>" target="_blank"><i class="bx bx-printer"></i></a>
+                <?php
+                    if($data_permohonan['id_posisi_berkas'] == 1){
+                ?>
+                <a class="btn btn-warning w-100 m-3" href="?pages=edit_permohonan&id=<?=$data_permohonan['id_booking']?>"><i class="bx bx-edit"></i></a>
+                <?php }?>
             <?php }else{
                     if(htmlentities($_SESSION['role_id']) == $data_permohonan['id_posisi_berkas']){    
             ?>

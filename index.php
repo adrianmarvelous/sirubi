@@ -259,7 +259,7 @@
                 if ($role_id == 1) {
                     if ($page == "") {
                         include "home.php";
-                    } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking'])) {
+                    } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking','edit_permohonan'])) {
                         include "controller/booking.php";
                     } elseif (in_array($page,['laporan'])){
                         include "controller/laporan.php";

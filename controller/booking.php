@@ -355,7 +355,7 @@
       $nomor_surat_balasan = htmlentities($_GET['nomor_surat_balasan']);
       $tanggal_surat_balasan = htmlentities($_GET['tanggal_surat_balasan']);
       $id_booking = htmlentities($_GET['id_booking']);
-      $status_balasan = 'ditolak';
+      $status_balasan = 'diterima';
       $created_at = date('Y-m-d H:i:s');
 
       $create = $db->prepare("INSERT INTO rb_surat_balasan (id_booking,status_balasan,nomor_surat_balasan,tanggal_surat_balasan,created_at) VALUES (:id_booking,:status_balasan,:nomor_surat_balasan,:tanggal_surat_balasan,:created_at)");
@@ -388,7 +388,74 @@
     ];
     
     include 'view/booking/list_booking.php';
-  }else{
+  }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'edit_permohonan'){
+    $id = htmlentities($_GET['id']);
+    $q_data_permohonan = $db->prepare("SELECT * FROM rb_booking WHERE id_booking = :id");
+    $q_data_permohonan->bindParam(':id',$id);
+    $q_data_permohonan->execute();
+    $data_permohonan = $q_data_permohonan->fetch(PDO::FETCH_ASSOC);
+    // Get all related tanggal_booking
+    $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking WHERE id_booking = :id");
+    $q_tanggal->bindParam(':id', $id);
+    $q_tanggal->execute();
+    $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+    
+    include 'view/booking/edit_permohonan.php';
+  }elseif(htmlentities(isset($_POST['action'])) &&  htmlentities($_POST['action'] == 'save_edit')){
+    include '../config/koneksi.php';
+    
+    $id_booking = htmlentities($_POST['id_booking']);
+    $name = htmlentities($_POST['name']);
+    $instansi = htmlentities($_POST['instansi']);
+    $telp = htmlentities($_POST['telp']);
+    $alamat = htmlentities($_POST['alamat']);
+    $nama_kegiatan = htmlentities($_POST['nama_kegiatan']);
+    $nomor_surat_permohonan = htmlentities($_POST['nomor_surat_permohonan']);
+    $tanggal_surat_permohonan = htmlentities($_POST['tanggal_surat_permohonan']);
+    $perihal_surat_permohonan = htmlentities($_POST['perihal_surat_permohonan']);
+    
+    $id_tanggal_booking = array_map('htmlentities', $_POST['id_tanggal_booking']);
+    $tanggal_peminjaman = array_map('htmlentities', $_POST['tanggal_peminjaman']);
+    $pukul_mulai = array_map('htmlentities', $_POST['pukul_mulai']);
+    $pukul_selesai = array_map('htmlentities', $_POST['pukul_selesai']);
+
+    $update_booking = $db->prepare("UPDATE rb_booking SET name=:name,instansi=:instansi,telp=:telp,alamat=:alamat,nama_kegiatan=:nama_kegiatan,nomor_surat_permohonan=:nomor_surat_permohonan,tanggal_surat_permohonan=:tanggal_surat_permohonan,perihal_surat_permohonan=:perihal_surat_permohonan WHERE id_booking=:id");
+    $update_booking->bindParam(':id',$id_booking);
+    $update_booking->bindParam(':name',$name);
+    $update_booking->bindParam(':instansi',$instansi);
+    $update_booking->bindParam(':telp',$telp);
+    $update_booking->bindParam(':alamat',$alamat);
+    $update_booking->bindParam(':nama_kegiatan',$nama_kegiatan);
+    $update_booking->bindParam(':nomor_surat_permohonan',$nomor_surat_permohonan);
+    $update_booking->bindParam(':tanggal_surat_permohonan',$tanggal_surat_permohonan);
+    $update_booking->bindParam(':perihal_surat_permohonan',$perihal_surat_permohonan);
+    $update_booking->execute();
+
+    for ($i=0; $i < count($tanggal_peminjaman); $i++) { 
+      if(!empty($id_tanggal_booking[$i])){
+        $update_tanggal = $db->prepare("UPDATE rb_tanggal_booking SET tanggal=:tanggal,pukul_mulai=:pukul_mulai,pukul_selesai=:pukul_selesai WHERE id_tanggal_booking=:id_tanggal_booking");
+        $update_tanggal->bindParam(':tanggal',$tanggal_peminjaman[$i]);
+        $update_tanggal->bindParam(':pukul_mulai',$pukul_mulai[$i]);
+        $update_tanggal->bindParam(':pukul_selesai',$pukul_selesai[$i]);
+        $update_tanggal->bindParam(':id_tanggal_booking',$id_tanggal_booking[$i]);
+        $update_tanggal->execute();
+      }else{
+        $insert_tanggal = $db->prepare("INSERT INTO rb_tanggal_booking (id_booking,tanggal,pukul_mulai,pukul_selesai) VALUES (:id_booking,:tanggal,:pukul_mulai,:pukul_selesai)");
+        $insert_tanggal->bindParam('id_booking',$id_booking);
+        $insert_tanggal->bindParam('tanggal',$tanggal_peminjaman[$i]);
+        $insert_tanggal->bindParam('pukul_mulai',$pukul_mulai[$i]);
+        $insert_tanggal->bindParam('pukul_selesai',$pukul_selesai[$i]);
+        $insert_tanggal->execute();
+      }
+    }
+    $_SESSION['alert'] = [
+        'type' => 'success',
+        'message' => 'Berhasil di edit.'
+    ];
+    
+    header('Location: ../index.php?pages=pengajuan_selesai&id='.$id_booking);
+  }
+  else{
     
       $q_tanggal = $db->prepare("SELECT tanggal FROM rb_tanggal_booking");
       $q_tanggal->execute();

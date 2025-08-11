@@ -17,6 +17,11 @@ $q_balasan->bindParam(':id', $id);
 $q_balasan->execute();
 $data_balasan = $q_balasan->fetch(PDO::FETCH_ASSOC);
 
+$q_tanggal = $db->prepare("SELECT *  FROM rb_tanggal_booking WHERE id_booking = :id");
+$q_tanggal->bindParam(':id',$id);
+$q_tanggal->execute();
+$tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+
 $data = [
     'tanggal_surat' => date('d F Y', strtotime($data_balasan['tanggal_surat_balasan'])),
     'nomor_surat_balasan' => $data_balasan['nomor_surat_balasan'],
@@ -26,8 +31,16 @@ $data = [
     'perihal_peminjam' => '[Perihal Surat Peminjam]',
     'hari_tanggal' => '[Hari/Tanggal Peminjaman]',
     'waktu' => '[Waktu Peminjaman]',
-    'acara' => '[Acara/Kegiatan]',
+    'acara' => $data_pemohon['nama_kegiatan'],
+    'tanggal' => $tanggal
 ];
+$tanggal_arr = [];
+foreach ($data['tanggal'] as $row) {
+    $tgl = date('d F Y', strtotime($row['tanggal'])) . ' ' . date('H:i', strtotime($row['pukul_mulai'])) . ' - ' . date('H:i', strtotime($row['pukul_selesai']));
+    $tanggal_arr[] = $tgl;
+}
+$data['tanggal'] = implode(', ', $tanggal_arr);
+
 
 // Create PDF
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
@@ -131,12 +144,7 @@ $bodyHtml = <<<EOD
     <tr>
         <td width="20%"><strong>Hari/Tanggal</strong></td>
         <td width="5%">:</td>
-        <td>{$data['hari_tanggal']}</td>
-    </tr>
-    <tr>
-        <td><strong>Waktu</strong></td>
-        <td width="5%">:</td>
-        <td>{$data['waktu']}</td>
+        <td>{$data['tanggal']}</td>
     </tr>
     <tr>
         <td><strong>Acara</strong></td>
