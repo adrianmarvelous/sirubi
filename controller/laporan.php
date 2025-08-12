@@ -12,6 +12,7 @@
     $q_tanggal->bindParam(':id', $id);
     $q_tanggal->execute();
     $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+    $data_permohonan['tanggal'] = $data_tanggal;
     
 
     include 'view/laporan/detail.php'

@@ -403,8 +403,77 @@
     include 'view/booking/edit_permohonan.php';
   }elseif(htmlentities(isset($_POST['action'])) &&  htmlentities($_POST['action'] == 'save_edit')){
     include '../config/koneksi.php';
-    
     $id_booking = htmlentities($_POST['id_booking']);
+    
+    function saveUploadedPDF($db, $id_booking, $fileInputName, $dbColumn) {
+      if (isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '/../resources/upload/surat/';
+        // Example: get old file name from database
+        $stmt = $db->prepare("SELECT {$dbColumn} FROM rb_booking WHERE id_booking = :id");
+        $stmt->bindParam(':id', $id_booking);
+        $stmt->execute();
+        $oldFile = $stmt->fetchColumn();
+
+        // If there is an old file and it exists, delete it
+        if ($oldFile && file_exists($uploadDir . $oldFile)) {
+            unlink($uploadDir . $oldFile);
+        }
+          // File info
+          $fileTmpPath = $_FILES[$fileInputName]['tmp_name'];
+          $fileName    = $_FILES[$fileInputName]['name'];
+          $fileSize    = $_FILES[$fileInputName]['size'];
+          $fileType    = $_FILES[$fileInputName]['type'];
+
+          // Allowed extensions
+          $allowedExtensions = ['pdf'];
+          $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+          if (in_array($fileExtension, $allowedExtensions)) {
+            // Generate unique filename
+            $timestamp = time();
+            $newFileName = $timestamp. '_' . $fileInputName . '_' . '.pdf';
+            // $newFileName = uniqid($fileInputName . '_', true) . '.' . $fileExtension;
+
+            // Set upload directory (make sure it exists & writable)
+            $uploadDir = __DIR__ . '/../resources/upload/surat/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Destination path
+            $destPath = $uploadDir . $newFileName;
+
+            // Move file
+            if (move_uploaded_file($fileTmpPath, $destPath)) {
+                // Relative path for database
+                $fileUrl = 'controller/../resources/upload/surat/' . $newFileName;
+                
+                $update_file = $db->prepare("UPDATE rb_booking SET {$dbColumn} = :nama_file WHERE id_booking = :id_booking");
+                $update_file->bindParam(':nama_file',$fileUrl);
+                $update_file->bindParam(':id_booking',$id_booking);
+                $update_file->execute();
+                
+
+                echo "✅ File uploaded successfully: $fileUrl<br>";
+                return $fileUrl;
+            } else {
+                echo "❌ Error moving file for {$fileInputName}.<br>";
+            }
+          } else {
+              echo "❌ Invalid file type for {$fileInputName}. Only PDF allowed.<br>";
+          }
+      } else {
+          echo "⚠️ No file uploaded for {$fileInputName} or upload error.<br>";
+      }
+
+      return null;
+    }
+
+    // Usage:
+    $suratFile    = saveUploadedPDF($db, $id_booking, 'surat_permohonan', 'upload_surat_permohonan');
+    $proposalFile = saveUploadedPDF($db, $id_booking, 'proposal', 'upload_proposal_rundown');
+
+    
     $name = htmlentities($_POST['name']);
     $instansi = htmlentities($_POST['instansi']);
     $telp = htmlentities($_POST['telp']);
@@ -431,6 +500,14 @@
     $update_booking->bindParam(':perihal_surat_permohonan',$perihal_surat_permohonan);
     $update_booking->execute();
 
+    $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking	 WHERE id_booking = :id");
+    $q_tanggal->bindParam(':id',$id_booking);
+    $q_tanggal->execute();
+    $tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+
+    $array_tanggal = array_column($tanggal, 'id_tanggal_booking');
+    $only_in_tanggal = array_diff($array_tanggal, $id_tanggal_booking);
+
     for ($i=0; $i < count($tanggal_peminjaman); $i++) { 
       if(!empty($id_tanggal_booking[$i])){
         $update_tanggal = $db->prepare("UPDATE rb_tanggal_booking SET tanggal=:tanggal,pukul_mulai=:pukul_mulai,pukul_selesai=:pukul_selesai WHERE id_tanggal_booking=:id_tanggal_booking");
@@ -448,6 +525,15 @@
         $insert_tanggal->execute();
       }
     }
+
+    for ($i=0; $i < count($only_in_tanggal); $i++) { 
+      $delete = $db->prepare("DELETE FROM rb_tanggal_booking WHERE id_tanggal_booking = :id");
+      $delete->bindParam(':id',$only_in_tanggal[$i]);
+      $delete->execute();
+    }
+
+
+
     $_SESSION['alert'] = [
         'type' => 'success',
         'message' => 'Berhasil di edit.'

@@ -50,40 +50,41 @@
                             <input type="text" class="form-control" name="nama_kegiatan" value="<?=$data_permohonan['nama_kegiatan']?>"  required>
                         </div>
                     </div>
-                    <?php
-                        foreach ($data_tanggal as $key => $tanggal) {
-                    ?>
-                    <input type="hidden" name="id_tanggal_booking[]" value="<?=$tanggal['id_tanggal_booking']?>">
                     <div id="tanggal-container">
-                        <div class="border border-3 rounded p-3 mt-3">
-                            <div class="row mt-3 tanggal-row">
-                                <div class="col-lg-3">
-                                    <label class="fw-bold" for="">Tanggal Peminjaman</label>
+                        <?php
+                            foreach ($data_tanggal as $key => $tanggal) {
+                        ?>
+                        
+                            <div class="border border-3 rounded p-3 mt-3">
+                        <input type="hidden" name="id_tanggal_booking[]" value="<?=$tanggal['id_tanggal_booking']?>">
+                                <div class="row mt-3 tanggal-row">
+                                    <div class="col-lg-3">
+                                        <label class="fw-bold" for="">Tanggal Peminjaman</label>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <input type="date" name="tanggal_peminjaman[]" class="form-control" value="<?= $tanggal['tanggal'] ?>" required>
+                                    </div>
                                 </div>
-                                <div class="col-lg-9">
-                                    <input type="date" name="tanggal_peminjaman[]" class="form-control" value="<?= $tanggal['tanggal'] ?>" required>
+                                <div class="row mt-3">
+                                    <div class="col-lg-3">
+                                        <label class="fw-bold" for="">Pukul Mulai</label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="time" name="pukul_mulai[]" class="form-control" value="<?=$tanggal['pukul_mulai']?>" required>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="fw-bold" for="">Pukul Selesai</label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="time" name="pukul_selesai[]" class="form-control" value="<?=$tanggal['pukul_selesai']?>" required>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-danger btn-delete-tanggal w-100">Hapus</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-lg-3">
-                                    <label class="fw-bold" for="">Pukul Mulai</label>
-                                </div>
-                                <div class="col-lg-2">
-                                    <input type="time" name="pukul_mulai[]" class="form-control" value="<?=$tanggal['pukul_mulai']?>" required>
-                                </div>
-                                <div class="col-lg-2">
-                                    <label class="fw-bold" for="">Pukul Selesai</label>
-                                </div>
-                                <div class="col-lg-2">
-                                    <input type="time" name="pukul_selesai[]" class="form-control" value="<?=$tanggal['pukul_selesai']?>" required>
-                                </div>
-                                <div class="col-lg-3">
-                                    <button type="button" class="btn btn-danger btn-delete-tanggal w-100">Hapus</button>
-                                </div>
-                            </div>
-                        </div>
+                        <?php }?>
                     </div>
-                    <?php }?>
 
 
                     <!-- Button to add more date inputs -->
