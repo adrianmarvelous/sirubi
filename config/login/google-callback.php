@@ -28,7 +28,7 @@ if (isset($_GET['code'])) {
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
-            $q_max_id = $db->prepare("SELECT max(id_user) as id_user FROM rb_userss");
+            $q_max_id = $db->prepare("SELECT max(id_user) as id_user FROM rb_users");
             $q_max_id->execute();
             $max_id = $q_max_id->fetch(PDO::FETCH_ASSOC);
             $last_id = $max_id['id_user']+1;
