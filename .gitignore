@@ -1,3 +1,4 @@
 # Ignore sensitive config files
 config/login/config-google.php
+config/login/google-callback.php
 config/koneksi.php

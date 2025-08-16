@@ -285,6 +285,24 @@
                      else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
+                } elseif ($role_id == 4) {
+                    if ($page == "") {
+                        // include "home_pegawai.php";
+                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
+                      include 'controller/booking.php';
+                    }
+                     else {
+                        echo "<script>alert('Akses ditolak');history.back();</script>";
+                    }
+                }elseif ($role_id == 5) {
+                    if ($page == "") {
+                        // include "home_pegawai.php";
+                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
+                      include 'controller/booking.php';
+                    }
+                     else {
+                        echo "<script>alert('Akses ditolak');history.back();</script>";
+                    }
                 }else {
                     echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
                 }
