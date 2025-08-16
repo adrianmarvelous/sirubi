@@ -161,7 +161,44 @@
             <?php
                 if(htmlentities($_SESSION['role_id']) == 1){
             ?>
-                <a class="btn btn-success w-100 m-3" href=""><i class="bx bx-bxl-whatsapp"></i></a>
+            <?php
+                // Target number in international format (without +, no leading 0)
+                $phone = "6285601625116"; 
+
+                // Gabungkan semua tanggal jadi string
+                $tanggal_list = [];
+                foreach ($data_permohonan['tanggal'] as $key => $value) {
+                    $tanggal_list[] = date('d-M-Y', strtotime($value['tanggal'])) . 
+                                    " Pukul " . date('H:i', strtotime($value['pukul_mulai'])) . 
+                                    " - " . date('H:i', strtotime($value['pukul_selesai']));
+                }
+                $tanggal_text = implode("\n- ", $tanggal_list);
+
+                // Pesan WhatsApp
+                $message = "Halo Bakesbangpol,\n\n"
+                        . "Saya ingin booking Rumah Bhinneka.\n\n"
+                        . "Rincian:\n"
+                        . "- Nama Pemesan: " . $data_permohonan['name'] . "\n"
+                        . "- Instansi: " . $data_permohonan['instansi'] . "\n"
+                        . "- No Telp: " . $data_permohonan['telp'] . "\n"
+                        . "- Alamat: " . $data_permohonan['alamat'] . "\n"
+                        . "- Nama Kegiatan: " . $data_permohonan['nama_kegiatan'] . "\n"
+                        . "- Tanggal:\n- " . $tanggal_text . "\n\n"
+                        . "Mohon disetujui permohonan peminjaman saya. Terima kasih.";
+
+                // Encode pesan
+                $encodedMessage = urlencode($message);
+
+                // Build link WhatsApp
+                $waLink = "https://wa.me/{$phone}?text={$encodedMessage}";
+                ?>
+
+                <!-- WhatsApp Button -->
+                <a class="btn btn-success w-100 m-3" href="<?= $waLink ?>" target="_blank">
+                    <i class="bx bxl-whatsapp"></i>
+                </a>
+
+                <!-- <a class="btn btn-success w-100 m-3" href="https://wa.me/6285601625116?text=Halo%20BKPSDM%2C%0A%0ASaya%20ingin%20booking%20gedung%20Diklat.%0A%0ARincian%3A%0A-%20Nama%20Pemesan%3A%20Adrian%20Marvel%0A-%20Tanggal%3A%2025%20Agustus%202025%0A-%20Waktu%3A%2009.00%20-%2016.00%20WIB%0A-%20Jumlah%20Peserta%3A%2050%0A-%20Kebutuhan%20Tambahan%3A%20Sound%20system%2C%20LCD%20proyektor%0A%0AMohon%20konfirmasi%20ketersediaan%20dan%20biaya.%20Terima%20kasih."><i class="bx bx-bxl-whatsapp"></i></a> -->
                 <a class="btn btn-info w-100 m-3" href="print/bukti_pengajuan.php?id_booking=<?=$data_permohonan['id_booking']?>" target="_blank"><i class="bx bx-printer"></i></a>
                 <?php
                     if($data_permohonan['id_posisi_berkas'] == 1){

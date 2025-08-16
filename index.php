@@ -73,10 +73,9 @@
 
   <style>
     body {
-      background-image: url('resources/img/bg-sirubi.jpeg');
+      background-image: url('resources/img/bg-sirubi-blur.jpeg');
       background-size: cover;         /* make the image cover the entire screen */
       background-repeat: no-repeat;   /* prevent repeating */
-      background-position: center;    /* center the image */
       background-attachment: fixed; /* makes the image fixed and not scroll */
       height: 100vh;                  /* full screen height */
       margin: 0;

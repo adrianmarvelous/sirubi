@@ -287,7 +287,7 @@
     if ($role_id == 1) {
         $sql = "SELECT * FROM rb_booking 
                 JOIN rb_posisi_berkas ON rb_booking.id_posisi_berkas = rb_posisi_berkas.id_posisi_berkas 
-                WHERE id_user = :id_user";
+                WHERE id_user = :id_user ORDER BY created_at DESC";
         $params[':id_user'] = $id_user;
     } else {
         $sql = "SELECT * FROM rb_booking 

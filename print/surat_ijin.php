@@ -34,12 +34,14 @@ $data = [
     'acara' => $data_pemohon['nama_kegiatan'],
     'tanggal' => $tanggal
 ];
-$tanggal_arr = [];
-foreach ($data['tanggal'] as $row) {
-    $tgl = date('d F Y', strtotime($row['tanggal'])) . ' ' . date('H:i', strtotime($row['pukul_mulai'])) . ' - ' . date('H:i', strtotime($row['pukul_selesai']));
-    $tanggal_arr[] = $tgl;
+$tanggal_list = '';
+foreach ($tanggal as $row) {
+    $tgl = date('d F Y', strtotime($row['tanggal'])) 
+        . ' pukul ' . date('H:i', strtotime($row['pukul_mulai'])) 
+        . ' WIB s.d. ' . date('H:i', strtotime($row['pukul_selesai'])) . ' WIB';
+    $tanggal_list .= "$tgl<br>";
 }
-$data['tanggal'] = implode(', ', $tanggal_arr);
+$data['tanggal'] = $tanggal_list;
 
 
 // Create PDF
@@ -172,6 +174,14 @@ $bodyHtml = <<<EOD
         Demikian surat ini dibuat untuk dapat dipergunakan sebagaimana mestinya.
     </p>
 </div>
+<table style='width:100%'>
+    <tr>
+        <td style='width:50%'></td>
+        <td style='width:50%;text-align:center'>
+            <div style='text-aling:center'>Kepala</div>
+        </td>
+    </tr>
+</table>
 EOD;
 
 $pdf->writeHTML($bodyHtml, true, false, true, false, '');

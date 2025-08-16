@@ -144,7 +144,7 @@
                                 <input type="hidden" name="action" value="save">
                                 <input type="hidden" name="signature_image" id="signature-data">
                                 <img id="signature-preview" style="margin-top: 10px; display:none;" />
-                                <button class="btn btn-danger" onclick="clearSignature()">Clear</button>
+                                <button type="button" class="btn btn-danger" onclick="clearSignature()">Clear</button>
                                 <button type="submit" class="btn btn-primary" onclick="saveSignature()">Simpan</button>
                             </div>
                         </form>

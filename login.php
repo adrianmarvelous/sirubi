@@ -80,12 +80,12 @@ session_start();
                 <div class="col-lg-4">
                   <div class="app-brand justify-content-center">
                     <a href="index.html" class="app-brand-link gap-2">
-                      <span class="app-brand-text demo text-heading fw-bold">Sirubi</span>
+                      <span class="app-brand-text demo text-heading fw-bold">Login</span>
                     </a>
                   </div>
                   <!-- /Logo -->
                   <h4 class="mb-1">Welcome to Sirubi!</h4>
-                  <p class="mb-6">Please sign-in to your account and start the adventure</p>
+                  <!-- <p class="mb-6">Please sign-in to your account and start the adventure</p> -->
 
                   <form id="formAuthentication" class="mb-6" action="controller/auth.php" method="POST">
                     <div class="mb-6">

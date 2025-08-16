@@ -80,7 +80,7 @@ session_start();
               <!-- Logo -->
               <div class="app-brand justify-content-center mb-6">
                 <a class="app-brand-link gap-2">
-                  <span class="app-brand-text demo text-heading fw-bold">Sirubi</span>
+                  <span class="app-brand-text demo text-heading fw-bold">Register</span>
                 </a>
               </div>
               <!-- /Logo -->
