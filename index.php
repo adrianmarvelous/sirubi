@@ -116,7 +116,7 @@
               // check active
               $isActive = ($currentPage == $slugPage) ? 'active' : '';
             ?>
-            <li class="menu-item  <?= $isActive ?>"">
+            <li class="menu-item  <?= $isActive ?>">
               <a href="<?=$value_menu['slug']?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-<?=$value_menu['icon']?>"></i>
                 <div class="text-truncate" data-i18n="Email"><?=$value_menu['menu']?></div>
