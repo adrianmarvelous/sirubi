@@ -5,7 +5,8 @@
             <thead>
                 <tr class="table-primary">
                     <td>No</td>
-                    <td>Tanggal</td>
+                    <td>Tanggal Pengajuan</td>
+                    <td>Tanggal Peminjaman</td>
                     <td>Nama Kegiatan</td>
                     <td>Instansi</td>
                     <td>Posisi Berkas</td>
@@ -18,6 +19,7 @@
                 ?>
                     <tr>
                         <td><?=$key+1?></td>
+                        <td><?=date('d-M-Y',strtotime($value['created_at']))?></td>
                         <td>
                             <?php
                                 foreach ($value['tanggal'] as $key => $tanggal) {
@@ -32,9 +34,19 @@
                             <a class="btn btn-primary" href="?pages=pengajuan_selesai&id=<?=$value['id_booking']?>">Detail</a>
                             <?php
                                 if($value['id_posisi_berkas'] == 7){
+                                    if(htmlentities($_SESSION['role_id']) == 1){
                             ?>
                             <a class="btn btn-info" href="?pages=laporan&id=<?=$value['id_booking']?>">Laporan</a>
-                            <?php }?>
+                            <?php 
+                                }else{
+                                    $q_laporan = $db->prepare("SELECT * FROM rb_laporan WHERE id_booking = :id");
+                                    $q_laporan->bindParam(':id', $value['id_booking']);
+                                    $q_laporan->execute();
+                                    if($q_laporan->rowCount() > 0){?>
+                            <a class="btn btn-info" href="?pages=laporan&id=<?=$value['id_booking']?>">Laporan</a>
+                                <?php }}
+                            }
+                            ?>
                         </td>
                     </tr>
                 <?php }?>

@@ -52,12 +52,21 @@ $pdf->SetTitle('Surat Jawaban Peminjaman Rumah Bhinneka');
 $pdf->SetSubject('Surat Jawaban');
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
-$pdf->SetMargins(20, 20, 20);
+$pdf->SetMargins(20, 5, 20);
 $pdf->SetAutoPageBreak(true, 20);
 $pdf->SetFont('times', '', 12);
 $pdf->AddPage();
 
 // Encode the logo image as base64
+$spesimenPath = '../assets/spesimen/19694071991031009.png';
+$spesimenSrc = '';
+
+if (file_exists($spesimenPath)) {
+    $spesimenData = base64_encode(file_get_contents($spesimenPath));
+    $spesimenSrc = 'data:image/png;base64,' . $spesimenData;
+} else {
+    $spesimenSrc = ''; // fallback if file doesn't exist
+}
 $logoPath = '../assets/logo/Logo Kota Surabaya.png';
 $imageSrc = '';
 if (file_exists($logoPath)) {
@@ -174,14 +183,33 @@ $bodyHtml = <<<EOD
         Demikian surat ini dibuat untuk dapat dipergunakan sebagaimana mestinya.
     </p>
 </div>
-<table style='width:100%'>
+<table width="100%">
     <tr>
-        <td style='width:50%'></td>
-        <td style='width:50%;text-align:center'>
-            <div style='text-aling:center'>Kepala</div>
+        <td width="50%"></td>
+        <td width="50%" align="center">
+            Kepala Badan
+        </td>
+    </tr>
+    <tr>
+        <td width="50%"></td>
+        <td width="50%" align="center">
+            <img src="{$spesimenSrc}" width="100" alt="Signature"><br>
+        </td>
+    </tr>
+    <tr>
+        <td width="50%"></td>
+        <td width="50%" align="center" style="text-decoration:underline;">
+            Tundjung Iswandaru, S.T., M.M.
+        </td>
+    </tr>
+    <tr>
+        <td width="50%"></td>
+        <td width="50%" align="center">
+            NIP. 19694071991031009
         </td>
     </tr>
 </table>
+
 EOD;
 
 $pdf->writeHTML($bodyHtml, true, false, true, false, '');
