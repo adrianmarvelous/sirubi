@@ -387,7 +387,9 @@
         'message' => 'Berhasil diapprove.'
     ];
     
-    include 'view/booking/list_booking.php';
+    session_write_close();
+    echo "<script>window.location='index.php?pages=list_booking';</script>";
+    exit;
   }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'edit_permohonan'){
     $id = htmlentities($_GET['id']);
     $q_data_permohonan = $db->prepare("SELECT * FROM rb_booking WHERE id_booking = :id");
