@@ -17,7 +17,7 @@
                 <?php
                     foreach ($permohonan as $key => $value) {
                 ?>
-                    <tr>
+                <tr class="<?= $value['id_posisi_berkas'] < 7 ? 'table-danger' : 'table-success' ?>">
                         <td><?=$key+1?></td>
                         <td><?=date('d-M-Y',strtotime($value['created_at']))?></td>
                         <td>
@@ -31,7 +31,7 @@
                         <td><?=$value['instansi']?></td>
                         <td><?=$value['posisi']?></td>
                         <td>
-                            <a class="btn <?= $value['status'] < 7 ? 'btn-info' : 'btn-primary' ?>" href="?pages=pengajuan_selesai&id=<?= $value['id_booking'] ?>">Detail</a>
+                            <a class="btn btn-primary" href="?pages=pengajuan_selesai&id=<?= $value['id_booking'] ?>">Detail</a>
                             <?php
                                 if($value['id_posisi_berkas'] == 7){
                                     if(htmlentities($_SESSION['role_id']) == 1){

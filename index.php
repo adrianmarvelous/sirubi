@@ -249,12 +249,33 @@
                 }
               ?>
               <?php if (isset($_SESSION['alert'])): ?>
-                <div class="alert alert-<?= $_SESSION['alert']['type'] ?> alert-dismissible fade show" role="alert">
-                  <?= $_SESSION['alert']['message'] ?>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <!-- Modal -->
+              <div class="modal fade show" id="alertModal" tabindex="-1" aria-hidden="true" style="display:block; background:rgba(0,0,0,0.5);">
+                <div class="modal-dialog  modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header bg-<?= $_SESSION['alert']['type'] ?>">
+                      <h5 class="modal-title text-white">Notification</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <?= $_SESSION['alert']['message'] ?>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-<?= $_SESSION['alert']['type'] ?>" data-bs-dismiss="modal">OK</button>
+                    </div>
+                  </div>
                 </div>
-                <?php unset($_SESSION['alert']); ?>
-              <?php endif; ?>
+              </div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  var myModal = new bootstrap.Modal(document.getElementById('alertModal'));
+                  myModal.show();
+                });
+              </script>
+              <?php unset($_SESSION['alert']); ?>
+            <?php endif; ?>
+
               <?php
                 $role_id = $_SESSION['role_id'];
                 $page = isset($_GET['pages']) ? htmlentities($_GET['pages']) : '';
