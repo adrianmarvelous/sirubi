@@ -65,6 +65,8 @@ if ($action == 'register') {
             $_SESSION['role'] = $user_data['role'];
             $_SESSION['auth'] = true;
 
+            // After successful login
+            $_SESSION['show_disclaimer'] = true;
             header('Location: ../index.php');
             exit;
         } else {

@@ -12,6 +12,17 @@
     $q_menu->execute();
     $menu = $q_menu->fetchAll(PDO::FETCH_ASSOC);
     // dd($menu);
+
+
+    // session_start();
+    $showDisclaimer = false;
+
+    if(isset($_SESSION['show_disclaimer']) && $_SESSION['show_disclaimer'] === true){
+        $showDisclaimer = true;
+        // Unset the flag so it only shows once
+        unset($_SESSION['show_disclaimer']);
+    }
+
 ?>
 <!doctype html>
 
@@ -42,6 +53,8 @@
       rel="stylesheet" />
 
     <link rel="stylesheet" href="assets/sneat/assets/vendor/fonts/iconify-icons.css" />
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -341,62 +354,33 @@
                     echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
                 }
               ?>
+<!-- Modal HTML -->
+<div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Please read and accept the disclaimer before continuing.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Agree</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-              <!-- Modal -->
-              <div class="modal fade" id="basicModalprofil" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel1">Lengkapi Data Diri</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="controller/profil.php" method="get">
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col mb-3">
-                            <label for="nameBasic" class="form-label">Nama</label>
-                            <input type="text" id="nameBasic" name="name" class="form-control" placeholder="Masukan Nama" value="<?=$check_user['name']?>" required>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col mb-3">
-                            <label for="nameBasic" class="form-label">Instansi</label>
-                            <input type="text" id="nameBasic" name="instansi" class="form-control" placeholder="Masukan Nama Instansi" value="<?=$check_user['instansi']?>" required>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col mb-3">
-                            <label for="nameBasic" class="form-label">No Telp</label>
-                            <input type="text" id="nameBasic"  name="telp" class="form-control" placeholder="Masukan No Telp" value="<?=$check_user['telp']?>" required>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col mb-3">
-                            <label for="nameBasic" class="form-label">Alamat</label>
-                            <input type="text" id="nameBasic"  name="alamat" class="form-control" placeholder="Masukan Alamat" value="<?=$check_user['alamat']?>" required>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="id_user" value="<?=$check_user['id_user']?>">
-                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Auto-show modal if $showModal is true -->
-              <?php if (isset($showModal)): ?>
-              <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                  var myModal = new bootstrap.Modal(document.getElementById('basicModalprofil'));
-                  myModal.show();
-                });
-              </script>
-              <?php endif; ?>
+<?php if($showDisclaimer): ?>
+<script>
+    window.addEventListener('load', function() {
+        var disclaimerModal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
+        disclaimerModal.show();
+    });
+</script>
+<?php endif; ?>
+
             </div>
             <!-- / Content -->
 
