@@ -363,7 +363,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Please read and accept the disclaimer before continuing.
+        Rumah Bhinneka hanya digunakan untuk : <br>
+        <ol>
+          <li>Aktivitas non profit, non komersil, dan non partisan</li>
+          <li>Aktivitas kesukuan dan keberagaman</li>
+          <li>Aktivitas keagamaan non profit</li>
+          <li>Aktivitas pelajar (contohnya : rapat/musyawarah kerja/ sosialisasi/dll)</li>
+        </ol>
+        Apakah anda sudah memahami dan menyetujui ketentuan diatas?
+        ada tombol klik “Ya, saya setuju”
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Agree</button>
