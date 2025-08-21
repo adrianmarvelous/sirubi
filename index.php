@@ -311,10 +311,11 @@
                         include "controller/users.php";
                     } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve','create_part_2'])){
                       include 'controller/booking.php';
-                    }elseif (in_array($page,['laporan','simpan_laporan'])){
-                        include "controller/laporan.php";
-                    } 
-                     else {
+                    } elseif (in_array($page,['laporan','simpan_laporan'])){
+                      include "controller/laporan.php";
+                    } elseif (in_array($page,['calendar_booking'])){
+                      include "controller/calendar_booking.php";
+                    } else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
                 } elseif ($role_id == 3) {
@@ -323,9 +324,10 @@
                     } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
                       include 'controller/booking.php';
                     }elseif (in_array($page,['laporan','simpan_laporan'])){
-                        include "controller/laporan.php";
-                    } 
-                     else {
+                      include "controller/laporan.php";
+                    } elseif (in_array($page,['calendar_booking'])){
+                      include "controller/calendar_booking.php";
+                    } else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
                 } elseif ($role_id == 4) {
@@ -333,10 +335,11 @@
                         // include "home_pegawai.php";
                     } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
                       include 'controller/booking.php';
-                    }elseif (in_array($page,['laporan','simpan_laporan'])){
-                        include "controller/laporan.php";
-                    } 
-                     else {
+                    } elseif (in_array($page,['laporan','simpan_laporan'])){
+                      include "controller/laporan.php";
+                    } elseif (in_array($page,['calendar_booking'])){
+                      include "controller/calendar_booking.php";
+                    } else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
                 }elseif ($role_id == 5) {
@@ -345,49 +348,51 @@
                     } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
                       include 'controller/booking.php';
                     }elseif (in_array($page,['laporan','simpan_laporan'])){
-                        include "controller/laporan.php";
-                    } 
-                     else {
+                      include "controller/laporan.php";
+                    } elseif (in_array($page,['calendar_booking'])){
+                      include "controller/calendar_booking.php";
+                    } else {
                         echo "<script>alert('Akses ditolak');history.back();</script>";
                     }
                 }else {
                     echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
                 }
               ?>
-<!-- Modal HTML -->
-<div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Rumah Bhinneka hanya digunakan untuk : <br>
-        <ol>
-          <li>Aktivitas non profit, non komersil, dan non partisan</li>
-          <li>Aktivitas kesukuan dan keberagaman</li>
-          <li>Aktivitas keagamaan non profit</li>
-          <li>Aktivitas pelajar (contohnya : rapat/musyawarah kerja/ sosialisasi/dll)</li>
-        </ol>
-        Apakah anda sudah memahami dan menyetujui ketentuan diatas?
-        ada tombol klik “Ya, saya setuju”
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Agree</button>
-      </div>
-    </div>
-  </div>
-</div>
+              <?php if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1 && $showDisclaimer): ?>
+                  <!-- Modal HTML -->
+                  <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                          <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Rumah Bhinneka hanya digunakan untuk : <br>
+                          <ol>
+                            <li>Aktivitas non profit, non komersil, dan non partisan</li>
+                            <li>Aktivitas kesukuan dan keberagaman</li>
+                            <li>Aktivitas keagamaan non profit</li>
+                            <li>Aktivitas pelajar (contohnya : rapat/musyawarah kerja/ sosialisasi/dll)</li>
+                          </ol>
+                          Apakah anda sudah memahami dan menyetujui ketentuan diatas?
+                          ada tombol klik “Ya, saya setuju”
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">I Agree</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-<?php if($showDisclaimer): ?>
-<script>
-    window.addEventListener('load', function() {
-        var disclaimerModal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
-        disclaimerModal.show();
-    });
-</script>
-<?php endif; ?>
+                  <script>
+                      window.addEventListener('load', function() {
+                          var disclaimerModal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
+                          disclaimerModal.show();
+                      });
+                  </script>
+              <?php endif; ?>
+
 
             </div>
             <!-- / Content -->
