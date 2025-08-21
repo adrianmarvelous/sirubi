@@ -364,7 +364,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header bg-danger  justify-content-center">
-                          <h5 class="modal-title text-white" id="disclaimerModalLabel" style="font-size:24px">DISCALIMER</h5>
+                          <h5 class="modal-title text-white" id="disclaimerModalLabel" style="font-size:24px"> ⚠️ DISCLAIMER ⚠️ </h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" style="font-size:24px">
