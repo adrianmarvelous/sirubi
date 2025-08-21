@@ -363,8 +363,8 @@
                   <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
-                        <div class="modal-header bg-danger text-white">
-                          <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+                        <div class="modal-header bg-danger">
+                          <h5 class="modal-title text-white" id="disclaimerModalLabel">Disclaimer</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
