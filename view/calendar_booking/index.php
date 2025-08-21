@@ -9,44 +9,33 @@
 
     <!-- FullCalendar & Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
+<script>
+  const bookedEvents = <?= json_encode($bookedEvents) ?>;
 
-    <script>
-      const bookedDates = <?= json_encode($bookedDates) ?>;
-      document.addEventListener('DOMContentLoaded', function () {
-      const calendarEl = document.getElementById('calendar');
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
 
-      // Convert booked dates to FullCalendar event format
-      const bookedEvents = bookedDates.map(date => ({
-        start: date,
-        display: 'background',
-        backgroundColor: 'red'
-      }));
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      selectable: true,
 
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        selectable: true,
+      events: bookedEvents, // ✅ events now include instansi names
 
-        events: bookedEvents, // 🔴 Highlight booked dates
-
-        dateClick: function (info) {
-          if (bookedDates.includes(info.dateStr)) {
-            // 🔴 Jika tanggal sudah dibooking, tampilkan modal unavailable
-            var modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
-            modal.show();
-          } else {
-            // ✅ Jika tersedia, buka modal booking
-            document.getElementById('selected-date').textContent = info.dateStr;
-            document.getElementById('selected-date-input').value = info.dateStr;
-            var modal = new bootstrap.Modal(document.getElementById('dateModal'));
-            modal.show();
-          }
+      dateClick: function (info) {
+        // Check if clicked date has event
+        const eventOnDate = bookedEvents.find(e => e.start === info.dateStr);
+        if (eventOnDate) {
+          alert("Tanggal sudah dibooking oleh: " + eventOnDate.title);
+        } else {
+          alert("Tanggal tersedia: " + info.dateStr);
         }
-
-      });
-
-      calendar.render();
+      }
     });
-    </script>
+
+    calendar.render();
+  });
+</script>
+
   </head>
   <body>
     <div class="container py-4">
