@@ -21,28 +21,54 @@
         display: 'background',
         backgroundColor: 'red'
       }));
+const calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'dayGridMonth',
+  selectable: true,
 
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        selectable: true,
+  events: bookedEvents, // 🔴 Highlight booked dates
 
-        events: bookedEvents, // 🔴 Highlight booked dates
+  // 🔽 Tambahin ini untuk mewarnai tanggal sebelum hari ini
+  dayCellDidMount: function (arg) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-        dateClick: function (info) {
-          if (bookedDates.includes(info.dateStr)) {
-            // 🔴 Jika tanggal sudah dibooking, tampilkan modal unavailable
-            var modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
-            modal.show();
-          } else {
-            // ✅ Jika tersedia, buka modal booking
-            document.getElementById('selected-date').textContent = info.dateStr;
-            document.getElementById('selected-date-input').value = info.dateStr;
-            var modal = new bootstrap.Modal(document.getElementById('dateModal'));
-            modal.show();
-          }
-        }
+    const cellDate = arg.date;
+    if (cellDate < today) {
+      arg.el.style.backgroundColor = "#e9ecef";   // abu-abu muda
+      arg.el.style.color = "#000";             // teks jadi abu-abu
+      arg.el.classList.add("fc-disabled-day");    // kasih class biar bisa di-CSS juga
+    }
+  },
 
-      });
+  dateClick: function (info) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 7); // H+7 (cannot book before this)
+
+    const clickedDate = new Date(info.dateStr);
+
+    if (clickedDate < minDate) {
+      var modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
+      document.getElementById('unavailableModalLabel').textContent = "Tanggal Tidak Bisa Dipilih";
+      document.querySelector('#unavailableModal .modal-body').textContent = "Tanggal minimal bisa dipilih H+7 dari hari ini.";
+      modal.show();
+      return;
+    }
+
+    if (bookedDates.includes(info.dateStr)) {
+      var modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
+      modal.show();
+    } else {
+      document.getElementById('selected-date').textContent = info.dateStr;
+      document.getElementById('selected-date-input').value = info.dateStr;
+      var modal = new bootstrap.Modal(document.getElementById('dateModal'));
+      modal.show();
+    }
+  }
+});
+
 
       calendar.render();
     });

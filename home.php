@@ -89,10 +89,24 @@
     <?php if (isset($showModal)): ?>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                var myModal = new bootstrap.Modal(document.getElementById('basicModalprofil'));
-                myModal.show();
+                <?php if (isset($showModal)): ?>
+                // Misal modal lain punya id = 'dateModal'
+                var otherModal = document.getElementById('disclaimerModal');
+
+                if (otherModal) {
+                    otherModal.addEventListener('hidden.bs.modal', function () {
+                    var myModal = new bootstrap.Modal(document.getElementById('basicModalprofil'));
+                    myModal.show();
+                    });
+                } else {
+                    // Kalau tidak ada modal lain, langsung show
+                    var myModal = new bootstrap.Modal(document.getElementById('basicModalprofil'));
+                    myModal.show();
+                }
+                <?php endif; ?>
             });
         </script>
+
     <?php endif; ?>
     <div class="col-xl-4 col-md-12 mb-4 animate__animated animate__fadeInDown" style="animation-delay: 0.1s;">
         <div class="card border-left-primary shadow h-100 py-2">

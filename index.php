@@ -1,27 +1,42 @@
 <?php
-    ini_set('display_errors', 1);
-    error_reporting(~0);
-    require_once 'config/koneksi.php';
-	if(htmlentities(!isset($_SESSION['auth']))){
-  		header("Location: login.php");
-	}
-    // dd($_SESSION);
-    $role_id = htmlentities($_SESSION['role_id']);
-    $q_menu = $db->prepare("SELECT * FROM `rb_menu` JOIN rb_role_to_menu ON rb_menu.id_menu = rb_role_to_menu.id_menu WHERE rb_role_to_menu.id_role = :role_id");
-    $q_menu->bindParam(':role_id',$role_id);
-    $q_menu->execute();
-    $menu = $q_menu->fetchAll(PDO::FETCH_ASSOC);
-    // dd($menu);
+ini_set('display_errors', 1);
+error_reporting(~0);
+require_once 'config/koneksi.php';
+if (htmlentities(!isset($_SESSION['auth']))) {
+  header("Location: login.php");
+}
+// dd($_SESSION);
+$role_id = htmlentities($_SESSION['role_id']);
+$q_menu = $db->prepare("SELECT * FROM `rb_menu` JOIN rb_role_to_menu ON rb_menu.id_menu = rb_role_to_menu.id_menu WHERE rb_role_to_menu.id_role = :role_id");
+$q_menu->bindParam(':role_id', $role_id);
+$q_menu->execute();
+$menu = $q_menu->fetchAll(PDO::FETCH_ASSOC);
+// dd($menu);
 
 
-    // session_start();
-    $showDisclaimer = false;
+// session_start();
+$showDisclaimer = false;
 
-    if(isset($_SESSION['show_disclaimer']) && $_SESSION['show_disclaimer'] === true){
-        $showDisclaimer = true;
-        // Unset the flag so it only shows once
-        unset($_SESSION['show_disclaimer']);
-    }
+if (isset($_SESSION['show_disclaimer']) && $_SESSION['show_disclaimer'] === true) {
+  $showDisclaimer = true;
+  // Unset the flag so it only shows once
+  unset($_SESSION['show_disclaimer']);
+}
+
+if ($role_id == 1) {
+  $q_notif_booking = $db->prepare("SELECT COUNT(*) as total FROM rb_booking WHERE id_user = :id_user AND id_posisi_berkas = 1");
+  $q_notif_booking->bindParam(':id_user', $_SESSION['id_user']);
+  $q_notif_booking->execute();
+  $notif_booking_ = $q_notif_booking->fetch(PDO::FETCH_ASSOC);
+  echo $notif_booking_['total'];
+} else {
+  $q_notif_booking = $db->prepare("SELECT COUNT(*) as total FROM rb_booking WHERE id_posisi_berkas = :status");
+  $q_notif_booking->bindParam(':status', $role_id);
+  $q_notif_booking->execute();
+  $notif_booking_ = $q_notif_booking->fetch(PDO::FETCH_ASSOC);
+  echo $notif_booking_['total'];
+}
+
 
 ?>
 <!doctype html>
@@ -31,146 +46,152 @@
   class="layout-menu-fixed layout-compact"
   data-assets-path="assets/sneat/assets/"
   data-template="vertical-menu-template-free">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard Sirubi</title>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <meta name="description" content="" />
+  <title>Dashboard Sirubi</title>
 
-	  <link rel="icon" href="assets/logo/Logo Kota Surabaya.png" type="image/x-icon"/>
-    <!-- Favicon -->
-    <!-- <link rel="icon" type="image/x-icon" href="assets/sneat/assets/img/favicon/favicon.ico" /> -->
+  <meta name="description" content="" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet" />
+  <link rel="icon" href="assets/logo/Logo Kota Surabaya.png" type="image/x-icon" />
+  <!-- Favicon -->
+  <!-- <link rel="icon" type="image/x-icon" href="assets/sneat/assets/img/favicon/favicon.ico" /> -->
 
-    <link rel="stylesheet" href="assets/sneat/assets/vendor/fonts/iconify-icons.css" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/sneat/assets/vendor/fonts/iconify-icons.css" />
   <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <!-- Core CSS -->
+  <!-- build:css assets/vendor/css/theme.css  -->
 
-    <link rel="stylesheet" href="assets/sneat/assets/vendor/css/core.css" />
-    <link rel="stylesheet" href="assets/sneat/assets/css/demo.css" />
+  <link rel="stylesheet" href="assets/sneat/assets/vendor/css/core.css" />
+  <link rel="stylesheet" href="assets/sneat/assets/css/demo.css" />
 
-    <!-- Vendors CSS -->
+  <!-- Vendors CSS -->
 
-    <link rel="stylesheet" href="assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <!-- endbuild -->
+  <!-- endbuild -->
 
-    <link rel="stylesheet" href="assets/sneat/assets/vendor/libs/apex-charts/apex-charts.css" />
+  <link rel="stylesheet" href="assets/sneat/assets/vendor/libs/apex-charts/apex-charts.css" />
 
-    <!-- Page CSS -->
+  <!-- Page CSS -->
 
-    <!-- Helpers -->
-    <script src="assets/sneat/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!-- Helpers -->
+  <script src="assets/sneat/assets/vendor/js/helpers.js"></script>
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
-    <script src="assets/sneat/assets/js/config.js"></script>
-  </head>
+  <script src="assets/sneat/assets/js/config.js"></script>
+</head>
 
-  <style>
-    body {
-      background-image: url('resources/img/bg-sirubi-blur.jpeg');
-      background-size: cover;         /* make the image cover the entire screen */
-      background-repeat: no-repeat;   /* prevent repeating */
-      background-attachment: fixed; /* makes the image fixed and not scroll */
-      height: 100vh;                  /* full screen height */
-      margin: 0;
-    }
-  </style>
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
+<style>
+  body {
+    background-image: url('resources/img/bg-sirubi-blur.jpeg');
+    background-size: cover;
+    /* make the image cover the entire screen */
+    background-repeat: no-repeat;
+    /* prevent repeating */
+    background-attachment: fixed;
+    /* makes the image fixed and not scroll */
+    height: 100vh;
+    /* full screen height */
+    margin: 0;
+  }
+</style>
 
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <a href="index.php" class="app-brand-link">
-              <span class="app-brand-text demo menu-text fw-bold ms-2">SiRuBi</span>
-            </a>
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
 
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-              <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a href="index.php" class="app-brand-link">
+            <span class="app-brand-text demo menu-text fw-bold ms-2">SiRuBi</span>
+          </a>
+
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="bx bx-chevron-left d-block d-xl-none align-middle"></i>
+          </a>
+        </div>
+
+        <div class="menu-divider mt-0"></div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+
+          <!-- Apps & Pages -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Main Menu</span>
+          </li>
+          <?php
+          $currentPage = $_GET['pages'] ?? ''; // get current page from URL
+          foreach ($menu as $key => $value_menu) {
+            $slugPage = str_replace('?pages=', '', $value_menu['slug']);
+
+            // check active
+            $isActive = ($currentPage == $slugPage) ? 'active' : '';
+          ?>
+            <li class="menu-item  <?= $isActive ?>">
+              <a href="<?= $value_menu['slug'] ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-<?= $value_menu['icon'] ?>"></i>
+                <div class="text-truncate" data-i18n="Email"><?= $value_menu['menu'] ?></div>
+              </a>
+            </li>
+          <?php } ?>
+
+        </ul>
+      </aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+          id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+              <i class="icon-base bx bx-menu icon-md"></i>
             </a>
           </div>
 
-          <div class="menu-divider mt-0"></div>
-
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-
-            <!-- Apps & Pages -->
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Main Menu</span>
-            </li>
-            <?php
-              $currentPage = $_GET['pages'] ?? ''; // get current page from URL
-              foreach ($menu as $key => $value_menu) {
-              $slugPage = str_replace('?pages=', '', $value_menu['slug']);
-
-              // check active
-              $isActive = ($currentPage == $slugPage) ? 'active' : '';
-            ?>
-            <li class="menu-item  <?= $isActive ?>">
-              <a href="<?=$value_menu['slug']?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-<?=$value_menu['icon']?>"></i>
-                <div class="text-truncate" data-i18n="Email"><?=$value_menu['menu']?></div>
-              </a>
-            </li>
-            <?php }?>
-        
-          </ul>
-        </aside>
-        <!-- / Menu -->
-
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
-
-          <nav
-            class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-            id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
-                <i class="icon-base bx bx-menu icon-md"></i>
-              </a>
-            </div>
-
-            <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-              <!-- Search -->
-              <div class="navbar-nav align-items-center me-auto">
-                <div class="nav-item d-flex align-items-center">
-                  <span class="w-px-22 h-px-22"><i class="icon-base bx bx-search icon-md"></i></span>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
-                    placeholder="Search..."
-                    aria-label="Search..." />
-                </div>
+          <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
+            <!-- Search -->
+            <div class="navbar-nav align-items-center me-auto">
+              <div class="nav-item d-flex align-items-center">
+                <span class="w-px-22 h-px-22"><i class="icon-base bx bx-search icon-md"></i></span>
+                <input
+                  type="text"
+                  class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
+                  placeholder="Search..."
+                  aria-label="Search..." />
               </div>
-              <!-- /Search -->
+            </div>
+            <!-- /Search -->
 
-              <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <!-- Place this tag where you want the button to render. -->
-                <!-- <li class="nav-item lh-1 me-4">
+            <ul class="navbar-nav flex-row align-items-center ms-md-auto">
+              <!-- Place this tag where you want the button to render. -->
+              <!-- <li class="nav-item lh-1 me-4">
                   <a
                     class="github-button"
                     href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free"
@@ -182,46 +203,46 @@
                   >
                 </li> -->
 
-                <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a
-                    class="nav-link dropdown-toggle hide-arrow p-0"
-                    href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                      <img src="<?= isset($_SESSION['picture']) ? htmlentities($_SESSION['picture']) : 'assets/sneat/assets/img/avatars/1.png' ?>" alt class="w-px-40 h-auto rounded-circle" />
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <div class="d-flex">
-                          <div class="flex-shrink-0 me-3">
-                            <div class="avatar avatar-online">
-                              <img src="<?= isset($_SESSION['picture']) ? htmlentities($_SESSION['picture']) : 'assets/sneat/assets/img/avatars/1.png' ?>" alt class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <h6 class="mb-0"><?=htmlentities($_SESSION['name'])?></h6>
-                            <small class="text-body-secondary"><?=htmlentities($_SESSION['role'])?></small>
+              <!-- User -->
+              <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a
+                  class="nav-link dropdown-toggle hide-arrow p-0"
+                  href="javascript:void(0);"
+                  data-bs-toggle="dropdown">
+                  <div class="avatar avatar-online">
+                    <img src="<?= isset($_SESSION['picture']) ? htmlentities($_SESSION['picture']) : 'assets/sneat/assets/img/avatars/1.png' ?>" alt class="w-px-40 h-auto rounded-circle" />
+                  </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                          <div class="avatar avatar-online">
+                            <img src="<?= isset($_SESSION['picture']) ? htmlentities($_SESSION['picture']) : 'assets/sneat/assets/img/avatars/1.png' ?>" alt class="w-px-40 h-auto rounded-circle" />
                           </div>
                         </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider my-1"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base bx bx-user icon-md me-3"></i><span>My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="icon-base bx bx-cog icon-md me-3"></i><span>Settings</span>
-                      </a>
-                    </li>
-                    <!-- <li>
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0"><?= htmlentities($_SESSION['name']) ?></h6>
+                          <small class="text-body-secondary"><?= htmlentities($_SESSION['role']) ?></small>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider my-1"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="icon-base bx bx-user icon-md me-3"></i><span>My Profile</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="icon-base bx bx-cog icon-md me-3"></i><span>Settings</span>
+                    </a>
+                  </li>
+                  <!-- <li>
                       <a class="dropdown-item" href="#">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 icon-base bx bx-credit-card icon-md me-3"></i
@@ -230,38 +251,38 @@
                         </span>
                       </a>
                     </li> -->
-                    <li>
-                      <div class="dropdown-divider my-1"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="config/login/logout.php">
-                        <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
+                  <li>
+                    <div class="dropdown-divider my-1"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="config/login/logout.php">
+                      <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <!--/ User -->
+            </ul>
+          </div>
+        </nav>
 
-          <!-- / Navbar -->
+        <!-- / Navbar -->
 
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
-            <div class="container-xxl flex-grow-1 container-p-y">
-              
-              <?php
-                $q_user = $db->prepare("SELECT * FROM rb_users WHERE id_user = :id_user");
-                $q_user->bindParam(':id_user', $_SESSION['id_user']);
-                $q_user->execute();
-                $check_user = $q_user->fetch(PDO::FETCH_ASSOC);
-                if(!isset($check_user['telp']) || !isset($check_user['instansi']) || !isset($check_user['alamat'])){
-                  $showModal = true;
-                }
-              ?>
-              <?php if (isset($_SESSION['alert'])): ?>
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+
+            <?php
+            $q_user = $db->prepare("SELECT * FROM rb_users WHERE id_user = :id_user");
+            $q_user->bindParam(':id_user', $_SESSION['id_user']);
+            $q_user->execute();
+            $check_user = $q_user->fetch(PDO::FETCH_ASSOC);
+            if (!isset($check_user['telp']) || !isset($check_user['instansi']) || !isset($check_user['alamat'])) {
+              $showModal = true;
+            }
+            ?>
+            <?php if (isset($_SESSION['alert'])): ?>
               <!-- Modal -->
               <div class="modal fade show" id="alertModal" tabindex="-1" aria-hidden="true" style="display:block; background:rgba(0,0,0,0.5);">
                 <div class="modal-dialog  modal-dialog-centered">
@@ -289,171 +310,171 @@
               <?php unset($_SESSION['alert']); ?>
             <?php endif; ?>
 
-              <?php
-                $role_id = $_SESSION['role_id'];
-                $page = isset($_GET['pages']) ? htmlentities($_GET['pages']) : '';
+            <?php
+            $role_id = $_SESSION['role_id'];
+            $page = isset($_GET['pages']) ? htmlentities($_GET['pages']) : '';
 
-                // Pages allowed for each role
-                if ($role_id == 1) {
-                    if ($page == "") {
-                        include "home.php";
-                    } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking','edit_permohonan','approve'])) {
-                        include "controller/booking.php";
-                    } elseif (in_array($page,['laporan','simpan_laporan'])){
-                        include "controller/laporan.php";
-                    } else {
-                        echo "<script>alert('Akses ditolak');history.back();</script>";
-                    }
-                } elseif ($role_id == 2) {
-                    if ($page == "") {
-                        // include "home_pegawai.php";
-                    } elseif (in_array($page, ['users'])) {
-                        include "controller/users.php";
-                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve','create_part_2'])){
-                      include 'controller/booking.php';
-                    } elseif (in_array($page,['laporan','simpan_laporan'])){
-                      include "controller/laporan.php";
-                    } elseif (in_array($page,['calendar_booking'])){
-                      include "controller/calendar_booking.php";
-                    } else {
-                        echo "<script>alert('Akses ditolak');history.back();</script>";
-                    }
-                } elseif ($role_id == 3) {
-                    if ($page == "") {
-                        // include "home_pegawai.php";
-                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
-                      include 'controller/booking.php';
-                    }elseif (in_array($page,['laporan','simpan_laporan'])){
-                      include "controller/laporan.php";
-                    } elseif (in_array($page,['calendar_booking'])){
-                      include "controller/calendar_booking.php";
-                    } else {
-                        echo "<script>alert('Akses ditolak');history.back();</script>";
-                    }
-                } elseif ($role_id == 4) {
-                    if ($page == "") {
-                        // include "home_pegawai.php";
-                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
-                      include 'controller/booking.php';
-                    } elseif (in_array($page,['laporan','simpan_laporan'])){
-                      include "controller/laporan.php";
-                    } elseif (in_array($page,['calendar_booking'])){
-                      include "controller/calendar_booking.php";
-                    } else {
-                        echo "<script>alert('Akses ditolak');history.back();</script>";
-                    }
-                }elseif ($role_id == 5) {
-                    if ($page == "") {
-                        // include "home_pegawai.php";
-                    } elseif (in_array($page, ['list_booking','pengajuan_selesai','approve'])){
-                      include 'controller/booking.php';
-                    }elseif (in_array($page,['laporan','simpan_laporan'])){
-                      include "controller/laporan.php";
-                    } elseif (in_array($page,['calendar_booking'])){
-                      include "controller/calendar_booking.php";
-                    } else {
-                        echo "<script>alert('Akses ditolak');history.back();</script>";
-                    }
-                }else {
-                    echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
-                }
-              ?>
-              <?php if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1 && $showDisclaimer): ?>
-                  <!-- Modal HTML -->
-                  <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header bg-danger  justify-content-center">
-                          <h5 class="modal-title text-white" id="disclaimerModalLabel" style="font-size:24px"> ⚠️ DISCLAIMER ⚠️ </h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" style="font-size:24px">
-                          Rumah Bhinneka hanya digunakan untuk : <br>
-                          <ol>
-                            <li>Aktivitas non profit, non komersil, dan non partisan</li>
-                            <li>Aktivitas kesukuan dan keberagaman</li>
-                            <li>Aktivitas keagamaan non profit</li>
-                            <li>Aktivitas pelajar (contohnya : rapat/musyawarah kerja/ sosialisasi/dll)</li>
-                          </ol>
-                          Apakah anda sudah memahami dan menyetujui ketentuan diatas?
-                          ada tombol klik “Ya, saya setuju”
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">I Agree</button>
-                        </div>
-                      </div>
+            // Pages allowed for each role
+            if ($role_id == 1) {
+              if ($page == "") {
+                include "home.php";
+              } elseif (in_array($page, ['calendar_booking', 'permohonan', 'create_part_2', 'pengajuan_selesai', 'list_booking', 'edit_permohonan', 'approve'])) {
+                include "controller/booking.php";
+              } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
+                include "controller/laporan.php";
+              } else {
+                echo "<script>alert('Akses ditolak');history.back();</script>";
+              }
+            } elseif ($role_id == 2) {
+              if ($page == "") {
+                // include "home_pegawai.php";
+              } elseif (in_array($page, ['users'])) {
+                include "controller/users.php";
+              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve', 'create_part_2'])) {
+                include 'controller/booking.php';
+              } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
+                include "controller/laporan.php";
+              } elseif (in_array($page, ['calendar_booking'])) {
+                include "controller/calendar_booking.php";
+              } else {
+                echo "<script>alert('Akses ditolak');history.back();</script>";
+              }
+            } elseif ($role_id == 3) {
+              if ($page == "") {
+                // include "home_pegawai.php";
+              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve'])) {
+                include 'controller/booking.php';
+              } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
+                include "controller/laporan.php";
+              } elseif (in_array($page, ['calendar_booking'])) {
+                include "controller/calendar_booking.php";
+              } else {
+                echo "<script>alert('Akses ditolak');history.back();</script>";
+              }
+            } elseif ($role_id == 4) {
+              if ($page == "") {
+                // include "home_pegawai.php";
+              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve'])) {
+                include 'controller/booking.php';
+              } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
+                include "controller/laporan.php";
+              } elseif (in_array($page, ['calendar_booking'])) {
+                include "controller/calendar_booking.php";
+              } else {
+                echo "<script>alert('Akses ditolak');history.back();</script>";
+              }
+            } elseif ($role_id == 5) {
+              if ($page == "") {
+                // include "home_pegawai.php";
+              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve'])) {
+                include 'controller/booking.php';
+              } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
+                include "controller/laporan.php";
+              } elseif (in_array($page, ['calendar_booking'])) {
+                include "controller/calendar_booking.php";
+              } else {
+                echo "<script>alert('Akses ditolak');history.back();</script>";
+              }
+            } else {
+              echo "<script>alert('Akses tidak diijinkan');history.back();</script>";
+            }
+            ?>
+            <?php if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1 && $showDisclaimer): ?>
+              <!-- Modal HTML -->
+              <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header bg-danger  justify-content-center">
+                      <h5 class="modal-title text-white" id="disclaimerModalLabel" style="font-size:24px"> ⚠️ DISCLAIMER ⚠️ </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </div>
-
-                  <script>
-                      window.addEventListener('load', function() {
-                          var disclaimerModal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
-                          disclaimerModal.show();
-                      });
-                  </script>
-              <?php endif; ?>
-
-
-            </div>
-            <!-- / Content -->
-
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl">
-                <div
-                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                  <div class="mb-2 mb-md-0">
-                   © Sirubi 2025 
-                    
-                  </div>
-                  <div class="d-none d-lg-inline-block">
+                    <div class="modal-body" style="font-size:24px">
+                      Rumah Bhinneka hanya digunakan untuk : <br>
+                      <ol>
+                        <li>Aktivitas non profit, non komersil, dan non partisan</li>
+                        <li>Aktivitas kesukuan dan keberagaman</li>
+                        <li>Aktivitas keagamaan non profit</li>
+                        <li>Aktivitas pelajar (contohnya : rapat/musyawarah kerja/ sosialisasi/dll)</li>
+                      </ol>
+                      Apakah anda sudah memahami dan menyetujui ketentuan diatas?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Saya Sejutu</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </footer>
-            <!-- / Footer -->
 
-            <div class="content-backdrop fade"></div>
+              <script>
+                window.addEventListener('load', function() {
+                  var disclaimerModal = new bootstrap.Modal(document.getElementById('disclaimerModal'));
+                  disclaimerModal.show();
+                });
+              </script>
+            <?php endif; ?>
+
+
           </div>
-          <!-- Content wrapper -->
+          <!-- / Content -->
+
+          <!-- Footer -->
+          <footer class="content-footer footer bg-footer-theme">
+            <div class="container-xxl">
+              <div
+                class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  © Sirubi 2025
+
+                </div>
+                <div class="d-none d-lg-inline-block">
+                </div>
+              </div>
+            </div>
+          </footer>
+          <!-- / Footer -->
+
+          <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Layout page -->
+        <!-- Content wrapper -->
       </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
+      <!-- / Layout page -->
     </div>
-    <!-- / Layout wrapper -->
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
 
 
-    <!-- Core JS -->
+  <!-- Core JS -->
 
-    <script src="assets/sneat/assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="assets/sneat/assets/vendor/libs/jquery/jquery.js"></script>
 
-    <script src="assets/sneat/assets/vendor/libs/popper/popper.js"></script>
-    <script src="assets/sneat/assets/vendor/js/bootstrap.js"></script>
+  <script src="assets/sneat/assets/vendor/libs/popper/popper.js"></script>
+  <script src="assets/sneat/assets/vendor/js/bootstrap.js"></script>
 
-    <script src="assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="assets/sneat/assets/vendor/js/menu.js"></script>
+  <script src="assets/sneat/assets/vendor/js/menu.js"></script>
 
-    <!-- endbuild -->
+  <!-- endbuild -->
 
-    <!-- Vendors JS -->
-    <script src="assets/sneat/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+  <!-- Vendors JS -->
+  <script src="assets/sneat/assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-    <!-- Main JS -->
+  <!-- Main JS -->
 
-    <script src="assets/sneat/assets/js/main.js"></script>
+  <script src="assets/sneat/assets/js/main.js"></script>
 
-    <!-- Page JS -->
-    <script src="assets/sneat/assets/js/dashboards-analytics.js"></script>
+  <!-- Page JS -->
+  <script src="assets/sneat/assets/js/dashboards-analytics.js"></script>
 
-    <!-- Place this tag before closing body tag for github widget button. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    
-    <script>
-      new DataTable('#example');
-    </script>
-  </body>
+  <!-- Place this tag before closing body tag for github widget button. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <script>
+    new DataTable('#example');
+  </script>
+</body>
+
 </html>
