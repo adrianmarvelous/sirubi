@@ -153,7 +153,21 @@ if ($role_id == 1) {
             <li class="menu-item  <?= $isActive ?>">
               <a href="<?= $value_menu['slug'] ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-<?= $value_menu['icon'] ?>"></i>
-                <div class="text-truncate" data-i18n="Email"><?= $value_menu['menu'] ?></div>
+                <div class="text-truncate" data-i18n="Email"><?= $value_menu['menu'] ?><?php if ($value_menu['menu'] == 'Daftar Permohonan') : ?>
+    <span style="
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 5px;
+      font-size: 12px;
+      display: inline-block;
+      min-width: 20px;
+      text-align: center;
+      line-height: 20px;
+    ">
+      <?= $notif_booking_['total']; ?>
+    </span>
+<?php endif; ?></div>
               </a>
             </li>
           <?php } ?>
