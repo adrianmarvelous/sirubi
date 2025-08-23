@@ -38,7 +38,7 @@
   }
 </style>
 <div class="row">
-
+  
     <!-- Modal -->
     <div class="modal fade" id="basicModalprofil" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -108,7 +108,7 @@
         </script>
 
     <?php endif; ?>
-    <div class="col-xl-4 col-md-12 mb-4 animate__animated animate__fadeInDown" style="animation-delay: 0.1s;">
+    <!-- <div class="col-xl-4 col-md-12 mb-4 animate__animated animate__fadeInDown" style="animation-delay: 0.1s;">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -169,7 +169,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="col-xl-6 col-md-6 mb-4 animate__animated animate__fadeInDown"  style="animation-delay: 0.7s;">
         <div class="card shadow p-3">
             <video width="100%" controls>
@@ -180,10 +180,135 @@
     </div>
     <div class="col-xl-6 col-md-6 mb-4 animate__animated animate__fadeInDown" style="animation-delay: 0.9s;">
         <div class="card shadow p-3">
-            <video width="100%" controls>
-                <source src="assets/video/0731.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            
+            <div class="container py-5">
+            <div id="photoSlider" class="carousel slide shadow-lg rounded" data-bs-ride="carousel">
+                
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="8" aria-label="Slide 9"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="9" aria-label="Slide 10"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="10" aria-label="Slide 11"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="11" aria-label="Slide 12"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="12" aria-label="Slide 13"></button>
+                <button type="button" data-bs-target="#photoSlider" data-bs-slide-to="13" aria-label="Slide 13"></button>
+                </div>
+
+                <!-- Slides -->
+                <div class="carousel-inner rounded">
+                    <div class="carousel-item active">
+                        <img src="assets/slider/1.jpeg" class="d-block w-100" alt="Photo 1">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>First Slide</h5>
+                        <p>This is a description for the first photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/2.jpeg" class="d-block w-100" alt="Photo 2">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Second Slide</h5>
+                        <p>Description for the second photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/3.jpeg" class="d-block w-100" alt="Photo 3">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/4.jpeg" class="d-block w-100" alt="Photo 4">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/5.jpeg" class="d-block w-100" alt="Photo 5">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/6.jpeg" class="d-block w-100" alt="Photo 6">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/7.jpeg" class="d-block w-100" alt="Photo 7">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/8.jpeg" class="d-block w-100" alt="Photo 8">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/9.jpeg" class="d-block w-100" alt="Photo 9">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/10.jpeg" class="d-block w-100" alt="Photo 10">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/11.jpeg" class="d-block w-100" alt="Photo 11">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/12.jpeg" class="d-block w-100" alt="Photo 12">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/slider/12.jpeg" class="d-block w-100" alt="Photo 12">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>Third Slide</h5>
+                        <p>Description for the third photo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#photoSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#photoSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            </div>
+
         </div>
     </div>
     <!-- Floating Action Button -->
