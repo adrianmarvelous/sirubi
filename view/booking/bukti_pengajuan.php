@@ -207,7 +207,7 @@
                 <a class="btn btn-primary w-100 m-3" href="?pages=approve&id_booking=<?=$data_permohonan['id_booking']?>&id_posisi_berkas=<?=$data_permohonan['']?>">Forward<i class="bx bx-send"></i></a>
                 <?php }?>
             <?php }else{
-                    if(htmlentities($_SESSION['role_id']) == $data_permohonan['id_posisi_berkas']){    
+                    if(htmlentities($_SESSION['role_id']) == $data_permohonan['id_posisi_berkas'] || (htmlentities($_SESSION['email'] == 'picbakesbangpol@example.com' && $data_permohonan['id_posisi_berkas'] < 6))){    
             ?>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-danger w-100 m-3" data-bs-toggle="modal" data-bs-target="#basicModalditolak">

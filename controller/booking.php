@@ -346,6 +346,10 @@
     $id_posisi_berkas = htmlentities($_GET['id_posisi_berkas']);
     $posisi_approve = $id_posisi_berkas+1;
 
+    if(htmlentities($_SESSION['email']) == 'picbakesbangpol@example.com'){
+      $posisi_approve = 6;
+    }
+
     $update = $db->prepare("UPDATE rb_booking SET id_posisi_berkas = :posisi_approve WHERE id_booking = :id_booking");
     $update->bindParam(':posisi_approve',$posisi_approve);
     $update->bindParam(':id_booking',$id_booking);
