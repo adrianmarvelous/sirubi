@@ -546,6 +546,94 @@
     ];
     
     header('Location: ../index.php?pages=pengajuan_selesai&id='.$id_booking);
+  }elseif(htmlentities(isset($_GET['pages'])) && htmlentities($_GET['pages']) == 'hapus'){
+    $id = htmlentities($_GET['id']);
+    // --- Ambil data booking ---
+    $q_data_permohonan = $db->prepare("SELECT * FROM rb_booking WHERE id_booking = :id");
+    $q_data_permohonan->bindParam(':id',$id);
+    $q_data_permohonan->execute();
+    $data_permohonan = $q_data_permohonan->fetch(PDO::FETCH_ASSOC);
+
+    // --- Ambil data laporan ---
+    $q_data_laporan = $db->prepare("SELECT * FROM rb_laporan WHERE id_booking = :id");
+    $q_data_laporan->bindParam(':id',$id);
+    $q_data_laporan->execute();
+    $data_laporan = $q_data_laporan->fetch(PDO::FETCH_ASSOC);
+
+    // --- Ambil data surat balasan ---
+    $q_data_balasan = $db->prepare("SELECT * FROM rb_surat_balasan WHERE id_booking = :id");
+    $q_data_balasan->bindParam(':id',$id);
+    $q_data_balasan->execute();
+    $data_balasan = $q_data_balasan->fetchAll(PDO::FETCH_ASSOC);
+
+    // --- Ambil data tanggal booking ---
+    $q_tanggal = $db->prepare("SELECT * FROM rb_tanggal_booking WHERE id_booking = :id");
+    $q_tanggal->bindParam(':id', $id);
+    $q_tanggal->execute();
+    $data_tanggal = $q_tanggal->fetchAll(PDO::FETCH_ASSOC);
+
+    // --- Jika ada laporan, hapus foto + laporan ---
+    if(isset($data_laporan['id'])){
+        $id_laporan = $data_laporan['id'];
+
+        // ambil foto laporan
+        $q_foto = $db->prepare("SELECT * FROM rb_laporan_foto WHERE id_laporan = :id");
+        $q_foto->bindParam(':id', $id_laporan);
+        $q_foto->execute();
+        $data_foto = $q_foto->fetchAll(PDO::FETCH_ASSOC);
+
+        // hapus file foto di folder
+        foreach ($data_foto as $value) {
+            if (!empty($value['path']) && file_exists($value['path'])) {
+                unlink($value['path']); 
+            }
+        }
+
+        // hapus semua row di rb_laporan_foto
+        $del_foto = $db->prepare("DELETE FROM rb_laporan_foto WHERE id_laporan = :id");
+        $del_foto->bindParam(':id',$id_laporan);
+        $del_foto->execute();
+
+        // hapus row di rb_laporan
+        $del_laporan = $db->prepare("DELETE FROM rb_laporan WHERE id_booking = :id");
+        $del_laporan->bindParam(':id',$id);
+        $del_laporan->execute();
+    }
+
+    // --- Hapus file surat permohonan & proposal ---
+    if (!empty($data_permohonan['upload_surat_permohonan']) && file_exists($data_permohonan['upload_surat_permohonan'])) {
+        unlink($data_permohonan['upload_surat_permohonan']); 
+    }
+    if (!empty($data_permohonan['upload_proposal_rundown']) && file_exists($data_permohonan['upload_proposal_rundown'])) {
+        unlink($data_permohonan['upload_proposal_rundown']); 
+    }
+
+    // --- Hapus surat balasan ---
+    $del_balasan = $db->prepare("DELETE FROM rb_surat_balasan WHERE id_booking = :id");
+    $del_balasan->bindParam(':id',$id);
+    $del_balasan->execute();
+
+    // --- Hapus tanggal booking ---
+    $del_tanggal = $db->prepare("DELETE FROM rb_tanggal_booking WHERE id_booking = :id");
+    $del_tanggal->bindParam(':id',$id);
+    $del_tanggal->execute();
+
+    // --- Terakhir hapus booking utama ---
+    $delete = $db->prepare("DELETE FROM rb_booking WHERE id_booking = :id");
+    $delete->bindParam(':id',$id);
+    $delete->execute();
+
+    $_SESSION['alert'] = [
+        'type' => 'success',
+        'message' => 'Data booking berhasil dihapus.'
+    ];
+
+    // Redirect with JS
+    echo "<script>window.location.href='index.php?pages=list_booking';</script>";
+    exit;
+
+
+
   }
   else{
     

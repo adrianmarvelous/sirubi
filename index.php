@@ -98,6 +98,7 @@ if ($role_id == 1) {
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
   <script src="assets/sneat/assets/js/config.js"></script>
+  
 </head>
 
 <style>
@@ -344,7 +345,7 @@ if ($role_id == 1) {
                 // include "home_pegawai.php";
               } elseif (in_array($page, ['users'])) {
                 include "controller/users.php";
-              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve', 'create_part_2'])) {
+              } elseif (in_array($page, ['list_booking', 'pengajuan_selesai', 'approve', 'create_part_2','hapus'])) {
                 include 'controller/booking.php';
               } elseif (in_array($page, ['laporan', 'simpan_laporan'])) {
                 include "controller/laporan.php";
